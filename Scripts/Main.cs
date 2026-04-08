@@ -32,18 +32,19 @@ public partial class Main : Control
     private void Init()
     {
         int count = GetWindow().Size.Y * mainBox.Columns / 16;
-
-        GD.Print($"Count {count}");
-
         System.Collections.Generic.List<TextureButton> copies = [];
+
+        var rng = new RandomNumberGenerator();
+        var buttonTypes = System.Enum.GetValues<Activity.ButtonType>();
 
         for (int i = 0; i < count; i++)
         {
-            var btn = activity.GetButton("Button").Duplicate() as TextureButton;
+            var randomType = buttonTypes[rng.RandiRange(0, buttonTypes.Length - 1)];
+            GD.Print($"Random Type => {randomType}");
+            var btn = activity.GetButton(randomType).Duplicate() as TextureButton;
             btn.Pressed += () => btn.Disabled = true;
 
             copies.Add(btn);
-
             mainBox.AddChild(copies[i]);
         }
 
