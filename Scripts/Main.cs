@@ -1,4 +1,3 @@
-using System.Linq;
 using Godot;
 
 namespace Minesweeper.Scripts;
@@ -7,10 +6,13 @@ public partial class Main : Control
 {
     /*START DEBUUGERR */
     RichTextLabel label;
+    string text;
 
     /*--------------*/
     Activity activity;
-    VBoxContainer mainBox;
+    GridContainer mainBox;
+
+    // private float Height => GetWindow().Size.Y;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -21,22 +23,31 @@ public partial class Main : Control
 
         activity = GetNode<Activity>("Activity");
 
-        mainBox = GetNode<VBoxContainer>("MainBox");
+        mainBox = GetNode<GridContainer>("MainBox");
+        mainBox.Columns = 30;
 
         Init();
     }
 
     private void Init()
     {
-        label.Text = activity.Options.Length + " Lenght";
+        int count = GetWindow().Size.Y * mainBox.Columns / 16;
 
-        HBoxContainer hBox = new();
-        var copy = activity.GetButton("Button").Duplicate() as TextureButton;
-        copy.Pressed += () => copy.Disabled = true;
+        GD.Print($"Count {count}");
 
-        hBox.AddChild(copy);
+        System.Collections.Generic.List<TextureButton> copies = [];
 
-        mainBox.AddChild(hBox);
+        for (int i = 0; i < count; i++)
+        {
+            var btn = activity.GetButton("Button").Duplicate() as TextureButton;
+            btn.Pressed += () => btn.Disabled = true;
+
+            copies.Add(btn);
+
+            mainBox.AddChild(copies[i]);
+        }
+
+        // hBox.AddChild(copy);
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
