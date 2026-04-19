@@ -12,6 +12,8 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
+    System.Collections.Generic.List<TextureButton> copies = [];
+
     // private float Height => GetWindow().Size.Y;
 
     // Called when the node enters the scene tree for the first time.
@@ -32,7 +34,6 @@ public partial class Main : Control
     private void Init()
     {
         int count = GetWindow().Size.Y * mainBox.Columns / 16;
-        System.Collections.Generic.List<TextureButton> copies = [];
 
         var rng = new RandomNumberGenerator();
         var buttonTypes = System.Enum.GetValues<Activity.ButtonType>();
@@ -40,17 +41,17 @@ public partial class Main : Control
         for (int i = 0; i < count; i++)
         {
             var randomType = buttonTypes[rng.RandiRange(0, buttonTypes.Length - 1)];
-            GD.Print($"Random Type => {randomType}");
             var btn = activity.GetButton(randomType).Duplicate() as TextureButton;
-            btn.Pressed += () => btn.Disabled = true;
+            HandleButton(btn, randomType);
 
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
         }
-
-        // hBox.AddChild(copy);
     }
 
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
+    private static void HandleButton(TextureButton btn, Activity.ButtonType type)
+    {
+        if (type.Equals(Activity.ButtonType.BUTTON) || type.Equals(Activity.ButtonType.EXPLODE))
+            btn.Pressed += () => btn.Disabled = true;
+    }
 }

@@ -43,7 +43,6 @@ public partial class Activity : Control
         }
     }
 
-    // GET — retrieve a button by name
     public TextureButton GetButton(ButtonType type)
     {
         if (buttonDict.TryGetValue(type, out TextureButton button))
@@ -52,7 +51,4 @@ public partial class Activity : Control
         GD.PrintErr($"Button '{type}' not found in dictionary.");
         return null;
     }
-
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta) { }
 }
