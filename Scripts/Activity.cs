@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Godot;
 
@@ -25,6 +26,20 @@ public partial class Activity : Control
     private readonly System.Collections.Generic.Dictionary<ButtonType, TextureButton> buttonDict =
     [];
 
+    private static readonly System.Collections.Generic.Dictionary<
+        ButtonType,
+        Texture2D
+    > textureMap = new()
+    {
+        { ButtonType.BUTTON, GD.Load<Texture2D>("res://Assets/icons/masked_tile.png") },
+        { ButtonType.EXPLODE, GD.Load<Texture2D>("res://Assets/icons/revealed_tile_bomb.png") },
+        {
+            ButtonType.QUESTIONMARK,
+            GD.Load<Texture2D>("res://Assets/icons/masked_tile_question_mark.png")
+        },
+        { ButtonType.REDFLAG, GD.Load<Texture2D>("res://Assets/icons/masked_tile_flag.png") },
+    };
+
     public override void _Ready()
     {
         // SET — populate dictionary by button name
@@ -43,12 +58,17 @@ public partial class Activity : Control
         }
     }
 
-    public TextureButton GetButton(ButtonType type)
+    internal TextureButton GetButton(ButtonType type)
     {
         if (buttonDict.TryGetValue(type, out TextureButton button))
             return button;
 
         GD.PrintErr($"Button '{type}' not found in dictionary.");
         return null;
+    }
+
+    internal Texture2D GetTexture(ButtonType type)
+    {
+        return textureMap.TryGetValue(type, out var tex) ? tex : null;
     }
 }

@@ -12,7 +12,15 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
-    System.Collections.Generic.List<TextureButton> copies = [];
+    private int stateIndex = 0;
+    private readonly Activity.ButtonType[] states =
+    [
+        Activity.ButtonType.BUTTON,
+        Activity.ButtonType.REDFLAG,
+        Activity.ButtonType.QUESTIONMARK,
+    ];
+
+    private readonly System.Collections.Generic.List<TextureButton> copies = [];
 
     // private float Height => GetWindow().Size.Y;
 
@@ -49,9 +57,35 @@ public partial class Main : Control
         }
     }
 
-    private static void HandleButton(TextureButton btn, Activity.ButtonType type)
+    private void HandleButton(TextureButton btn, Activity.ButtonType type)
     {
-        if (type.Equals(Activity.ButtonType.BUTTON) || type.Equals(Activity.ButtonType.EXPLODE))
-            btn.Pressed += () => btn.Disabled = true;
+        if (type is Activity.ButtonType.BUTTON or Activity.ButtonType.EXPLODE)
+        {
+            btn.GuiInput += @event =>
+            {
+                if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed)
+                {
+                    if (mouseEvent.ButtonIndex == MouseButton.Right)
+                    {
+                        stateIndex = (stateIndex + 1) % 3;
+                        var type = states[stateIndex];
+
+                        btn.TextureNormal = activity.GetTexture(type);
+                        return;
+                    }
+
+                    if (mouseEvent.ButtonIndex == MouseButton.Left)
+                    {
+                        if (stateIndex > 0)
+                            return;
+
+                        btn.Disabled = true;
+                        GD.PrintRich(
+                            $"[color=#eb7821]LEFT CLICKED {btn.Disabled} Button Type {type} [/color]"
+                        );
+                    }
+                }
+            };
+        }
     }
 }
