@@ -12,7 +12,15 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
-    private int stateIndex = 0;
+    private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
+            Activity.ButtonType.REDFLAG
+        ),
+        _questionTexture = Activity.GetTexture(Activity.ButtonType.QUESTIONMARK);
+
+    private int bombCount = 10;
+
+    private readonly System.Collections.Generic.Dictionary<TextureButton, int> buttonStates = [];
+
     private readonly Activity.ButtonType[] states =
     [
         Activity.ButtonType.BUTTON,
@@ -22,9 +30,6 @@ public partial class Main : Control
 
     private readonly System.Collections.Generic.List<TextureButton> copies = [];
 
-    // private float Height => GetWindow().Size.Y;
-
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         /*----------------*/
@@ -43,14 +48,11 @@ public partial class Main : Control
     {
         int count = GetWindow().Size.Y * mainBox.Columns / 16;
 
-        var rng = new RandomNumberGenerator();
-        var buttonTypes = System.Enum.GetValues<Activity.ButtonType>();
-
         for (int i = 0; i < count; i++)
         {
-            var randomType = buttonTypes[rng.RandiRange(0, buttonTypes.Length - 1)];
-            var btn = activity.GetButton(randomType).Duplicate() as TextureButton;
-            HandleButton(btn, randomType);
+            var type = Activity.ButtonType.BUTTON;
+            var btn = activity.GetButton(Activity.ButtonType.BUTTON).Duplicate() as TextureButton;
+            HandleButton(btn, type);
 
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
@@ -67,16 +69,22 @@ public partial class Main : Control
                 {
                     if (mouseEvent.ButtonIndex == MouseButton.Right)
                     {
-                        stateIndex = (stateIndex + 1) % 3;
-                        var type = states[stateIndex];
+                        if (!buttonStates.ContainsKey(btn))
+                            buttonStates[btn] = 0;
 
-                        btn.TextureNormal = activity.GetTexture(type);
-                        return;
+                        buttonStates[btn] = (buttonStates[btn] + 1) % states.Length;
+
+                        var type = states[buttonStates[btn]];
+                        btn.TextureNormal = Activity.GetTexture(type);
                     }
 
                     if (mouseEvent.ButtonIndex == MouseButton.Left)
                     {
-                        if (stateIndex > 0)
+                        var flag =
+                            Activity.CompareTextures(btn.TextureNormal, _redFlagTexture)
+                            || Activity.CompareTextures(btn.TextureNormal, _questionTexture);
+
+                        if (flag)
                             return;
 
                         btn.Disabled = true;

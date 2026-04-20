@@ -66,8 +66,13 @@ public partial class Activity : Control
         return null;
     }
 
-    internal Texture2D GetTexture(ButtonType type)
+    internal static Texture2D GetTexture(ButtonType type)
     {
         return textureMap.TryGetValue(type, out var tex) ? tex : null;
+    }
+
+    internal static bool CompareTextures(Texture2D source, Texture2D destination)
+    {
+        return source.Equals(destination);
     }
 }
