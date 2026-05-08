@@ -38,7 +38,9 @@ public partial class Main : Control
 
         activity = GetNode<Activity>("Activity");
 
-        mainBox = GetNode<GridContainer>("MainBox");
+        VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
+
+        mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = 30;
 
         Init();
