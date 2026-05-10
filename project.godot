@@ -28,11 +28,6 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Minesweeper"
 
-[gui]
-
-theme/custom="uid://4r6b2cnujbph"
-theme/custom_font="uid://djmmt12v8benc"
-
 [physics]
 
 3d/physics_engine="Jolt Physics"
