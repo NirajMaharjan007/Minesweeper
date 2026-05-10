@@ -50,7 +50,7 @@ public partial class Main : Control
     {
         int count = GetWindow().Size.Y * mainBox.Columns / 16;
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count - 30; i++)
         {
             var type = Activity.ButtonType.BUTTON;
             var btn = activity.GetButton(Activity.ButtonType.BUTTON).Duplicate() as TextureButton;
