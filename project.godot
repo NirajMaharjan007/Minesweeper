@@ -22,7 +22,8 @@ window/size/viewport_width=480
 window/size/viewport_height=640
 window/size/resizable=false
 window/size/borderless=true
-window/stretch/mode="canvas_items"
+window/stretch/mode="viewport"
+window/handheld/orientation=1
 
 [dotnet]
 
