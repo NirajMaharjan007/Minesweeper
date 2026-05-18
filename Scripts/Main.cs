@@ -12,6 +12,8 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
+    Camera2D camera2D;
+
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
         ),
@@ -38,6 +40,10 @@ public partial class Main : Control
 
         activity = GetNode<Activity>("Activity");
 
+        camera2D = GetNode<Camera2D>("Camera2D");
+
+        GD.Print($"Camera {camera2D.Zoom.X}");
+
         VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
@@ -46,11 +52,16 @@ public partial class Main : Control
         Init();
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
     private void Init()
     {
         int count = GetWindow().Size.Y * mainBox.Columns / 16;
 
-        for (int i = 0; i < count - 30; i++)
+        for (int i = 0; i < count; i++)
         {
             var type = Activity.ButtonType.BUTTON;
             var btn = activity.GetButton(Activity.ButtonType.BUTTON).Duplicate() as TextureButton;
