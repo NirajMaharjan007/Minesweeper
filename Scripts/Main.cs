@@ -12,14 +12,10 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
-    Camera2D camera2D;
-
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
         ),
         _questionTexture = Activity.GetTexture(Activity.ButtonType.QUESTIONMARK);
-
-    private int bombCount = 10;
 
     private readonly System.Collections.Generic.Dictionary<TextureButton, int> buttonStates = [];
 
@@ -40,14 +36,10 @@ public partial class Main : Control
 
         activity = GetNode<Activity>("Activity");
 
-        camera2D = GetNode<Camera2D>("Camera2D");
-
-        GD.Print($"Camera {camera2D.Zoom.X}");
-
         VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
-        mainBox.Columns = 30;
+        //mainBox.Columns = 9;
 
         Init();
     }
@@ -59,7 +51,12 @@ public partial class Main : Control
 
     private void Init()
     {
-        int count = GetWindow().Size.Y * mainBox.Columns / 16;
+        var window = GetWindow();
+        window.ContentScaleSize = new Vector2I(144, 144);
+        window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
+
+        int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
 
         for (int i = 0; i < count; i++)
         {
@@ -70,6 +67,7 @@ public partial class Main : Control
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
         }
+        GD.Print($"Total copies {copies.Count} Grid Columns {mainBox.Columns}");
     }
 
     private void HandleButton(TextureButton btn, Activity.ButtonType type)
