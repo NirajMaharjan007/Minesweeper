@@ -4,6 +4,9 @@ namespace Minesweeper.Scripts;
 
 public partial class Main : Control
 {
+    [Export]
+    Minesweeper.Misc.Definition.GridSize size = Minesweeper.Misc.Definition.GridSize._9X9;
+
     /*START DEBUUGERR */
     RichTextLabel label;
     string text;
@@ -11,6 +14,8 @@ public partial class Main : Control
     /*--------------*/
     Activity activity;
     GridContainer mainBox;
+
+    Minesweeper.Misc.Definition definition = Minesweeper.Misc.Definition.Instance;
 
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
@@ -39,7 +44,7 @@ public partial class Main : Control
         VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
-        //mainBox.Columns = 9;
+        mainBox.Columns = definition.GetCalculateColumn(size);
 
         Init();
     }
@@ -52,7 +57,7 @@ public partial class Main : Control
     private void Init()
     {
         var window = GetWindow();
-        window.ContentScaleSize = new Vector2I(144, 144);
+        window.ContentScaleSize = definition.GetCalculateSize(size);
         window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
         window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
 
@@ -67,6 +72,7 @@ public partial class Main : Control
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
         }
+
         GD.Print($"Total copies {copies.Count} Grid Columns {mainBox.Columns}");
     }
 
