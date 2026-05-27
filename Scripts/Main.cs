@@ -4,6 +4,9 @@ namespace Minesweeper.Scripts;
 
 public partial class Main : Control
 {
+    [Export]
+    Minesweeper.Misc.Definition.GridSize size = Minesweeper.Misc.Definition.GridSize._9X9;
+
     /*START DEBUUGERR */
     RichTextLabel label;
     string text;
@@ -12,12 +15,16 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
 
+    private int flagCount = 0;
+
+    private System.Collections.Generic.HashSet<int> bombIndices = new();
+
+    Minesweeper.Misc.Definition definition = Minesweeper.Misc.Definition.Instance;
+
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
         ),
         _questionTexture = Activity.GetTexture(Activity.ButtonType.QUESTIONMARK);
-
-    private int bombCount = 10;
 
     private readonly System.Collections.Generic.Dictionary<TextureButton, int> buttonStates = [];
 
@@ -41,23 +48,69 @@ public partial class Main : Control
         VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
-        mainBox.Columns = 30;
+        mainBox.Columns = definition.GetCalculateColumn(size);
 
         Init();
     }
 
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+    }
+
     private void Init()
     {
-        int count = GetWindow().Size.Y * mainBox.Columns / 16;
+        var window = GetWindow();
+        window.ContentScaleSize = definition.GetCalculateSize(size);
+        window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
 
-        for (int i = 0; i < count - 30; i++)
+        int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
+
+        int bombCount = definition.GetCalculatedBomb(size);
+
+        var rng = new RandomNumberGenerator();
+        while (bombIndices.Count < bombCount)
+            bombIndices.Add(rng.RandiRange(0, count));
+
+        for (int i = 0; i < count; i++)
         {
-            var type = Activity.ButtonType.BUTTON;
-            var btn = activity.GetButton(Activity.ButtonType.BUTTON).Duplicate() as TextureButton;
+            var type = bombIndices.Contains(i)
+                ? Activity.ButtonType.EXPLODE
+                : Activity.ButtonType.BUTTON;
+
+            var btn = activity.GetButton(type).Duplicate() as TextureButton;
+
             HandleButton(btn, type);
 
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
+        }
+
+        GD.Print(
+            $"Total copies {copies.Count} Grid Columns {mainBox.Columns} Bomb-count {bombCount}"
+        );
+    }
+
+    private void RevealAllBombs(TextureButton clicked)
+    {
+        GD.Print("Reveal All Bombs");
+
+        foreach (var index in bombIndices)
+        {
+            var btn = copies[index];
+
+            if (btn == clicked)
+            {
+                btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.EXPLODE);
+                btn.TexturePressed = Activity.GetTexture(Activity.ButtonType.EXPLODE);
+            }
+            else
+            {
+                btn.TexturePressed = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
+                btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
+            }
+            btn.Disabled = true;
         }
     }
 
@@ -71,13 +124,35 @@ public partial class Main : Control
                 {
                     if (mouseEvent.ButtonIndex == MouseButton.Right)
                     {
+                        //if (!buttonStates.ContainsKey(btn))
+                        //buttonStates[btn] = 0;
+
+                        //buttonStates[btn] = (buttonStates[btn] + 1) % states.Length;
+
+                        //var type = states[buttonStates[btn]];
+                        //btn.TextureNormal = Activity.GetTexture(type);
+
                         if (!buttonStates.ContainsKey(btn))
                             buttonStates[btn] = 0;
 
-                        buttonStates[btn] = (buttonStates[btn] + 1) % states.Length;
+                        var currentState = states[buttonStates[btn]];
 
-                        var type = states[buttonStates[btn]];
-                        btn.TextureNormal = Activity.GetTexture(type);
+                        // Block adding flag if at max
+                        if (
+                            currentState == Activity.ButtonType.BUTTON
+                            && flagCount >= definition.GetCalculatedBomb(size)
+                        )
+                            return;
+
+                        // Track flag count
+                        if (currentState == Activity.ButtonType.BUTTON)
+                            flagCount++;
+                        else if (currentState == Activity.ButtonType.REDFLAG)
+                            flagCount--;
+
+                        buttonStates[btn] = (buttonStates[btn] + 1) % states.Length;
+                        var newType = states[buttonStates[btn]];
+                        btn.TextureNormal = Activity.GetTexture(newType);
                     }
 
                     if (mouseEvent.ButtonIndex == MouseButton.Left)
@@ -86,10 +161,14 @@ public partial class Main : Control
                             Activity.CompareTextures(btn.TextureNormal, _redFlagTexture)
                             || Activity.CompareTextures(btn.TextureNormal, _questionTexture);
 
-                        if (flag)
+                        if (flag || btn.Disabled)
                             return;
 
                         btn.Disabled = true;
+
+                        if (type == Activity.ButtonType.EXPLODE)
+                            RevealAllBombs(btn);
+
                         GD.PrintRich(
                             $"[color=#eb7821]LEFT CLICKED {btn.Disabled} Button Type {type} [/color]"
                         );

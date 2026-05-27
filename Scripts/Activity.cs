@@ -26,6 +26,7 @@ public partial class Activity : Control
         NUMBER_SIX,
         NUMBER_SEVEN,
         NUMBER_EIGHT,
+        DISABLED,
     }
 
     private readonly Dictionary<ButtonType, TextureButton> buttonDict = [];
