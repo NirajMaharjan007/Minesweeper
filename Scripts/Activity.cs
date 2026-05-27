@@ -32,7 +32,11 @@ public partial class Activity : Control
     > textureMap = new()
     {
         { ButtonType.BUTTON, GD.Load<Texture2D>("res://Assets/icons/masked_tile.png") },
-        { ButtonType.EXPLODE, GD.Load<Texture2D>("res://Assets/icons/revealed_tile_bomb.png") },
+        { ButtonType.EXPLODE, GD.Load<Texture2D>("res://Assets/icons/tile_exploded.png") },
+        {
+            ButtonType.REVEALEDBOMB,
+            GD.Load<Texture2D>("res://Assets/icons/revealed_tile_bomb.png")
+        },
         {
             ButtonType.QUESTIONMARK,
             GD.Load<Texture2D>("res://Assets/icons/masked_tile_question_mark.png")
