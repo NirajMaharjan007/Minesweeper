@@ -13,6 +13,9 @@ public partial class Activity : Control
     private Texture2D _revealedTileBomb;
 
     [Export]
+    private Texture2D _explodedTileBomb;
+
+    [Export]
     private Texture2D _maskedTileQuestionMark;
 
     [Export]
@@ -42,9 +45,10 @@ public partial class Activity : Control
     public override void _Ready()
     {
         textureMap.Add(ButtonType.BUTTON, _maskedTile);
-        textureMap.Add(ButtonType.EXPLODE, _revealedTileBomb);
+        textureMap.Add(ButtonType.REVEALEDBOMB, _revealedTileBomb);
         textureMap.Add(ButtonType.QUESTIONMARK, _maskedTileQuestionMark);
         textureMap.Add(ButtonType.REDFLAG, _maskedTileFlag);
+        textureMap.Add(ButtonType.EXPLODE, _explodedTileBomb);
 
         // SET — populate dictionary by button name
         foreach (Node child in GetChildren())
