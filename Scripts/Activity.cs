@@ -20,6 +20,7 @@ public partial class Activity : Control
         NUMBER_SIX,
         NUMBER_SEVEN,
         NUMBER_EIGHT,
+        DISABLED,
     }
 
     private readonly System.Collections.Generic.Dictionary<ButtonType, TextureButton> buttonDict =
