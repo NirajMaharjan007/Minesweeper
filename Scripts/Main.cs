@@ -63,17 +63,29 @@ public partial class Main : Control
 
         int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
 
+        int bombCount = definition.GetCalculatedBomb(size);
+        var bombIndices = new System.Collections.Generic.HashSet<int>();
+        var rng = new RandomNumberGenerator();
+        while (bombIndices.Count < bombCount)
+            bombIndices.Add(rng.RandiRange(0, count));
+
         for (int i = 0; i < count; i++)
         {
-            var type = Activity.ButtonType.BUTTON;
-            var btn = activity.GetButton(Activity.ButtonType.BUTTON).Duplicate() as TextureButton;
+            var type = bombIndices.Contains(i)
+                ? Activity.ButtonType.EXPLODE
+                : Activity.ButtonType.BUTTON;
+
+            var btn = activity.GetButton(type).Duplicate() as TextureButton;
+
             HandleButton(btn, type);
 
             copies.Add(btn);
             mainBox.AddChild(copies[i]);
         }
 
-        GD.Print($"Total copies {copies.Count} Grid Columns {mainBox.Columns}");
+        GD.Print(
+            $"Total copies {copies.Count} Grid Columns {mainBox.Columns} Bomb-count {bombCount}"
+        );
     }
 
     private void HandleButton(TextureButton btn, Activity.ButtonType type)

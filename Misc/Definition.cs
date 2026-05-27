@@ -13,13 +13,6 @@ public sealed class Definition
         _16X30,
     }
 
-    private readonly System.Collections.Generic.Dictionary<GridSize, int> settings = new()
-    {
-        { GridSize._9X9, 10 },
-        { GridSize._16X16, 40 },
-        { GridSize._16X30, 99 },
-    };
-
     public int GetCalculateColumn(GridSize size)
     {
         switch (size)
@@ -54,6 +47,23 @@ public sealed class Definition
         }
     }
 
-    public System.Collections.Generic.Dictionary<GridSize, int> Setting => settings;
+    public int GetCalculatedBomb(GridSize size)
+    {
+        switch (size)
+        {
+            case GridSize._9X9:
+                return 10;
+
+            case GridSize._16X16:
+                return 40;
+
+            case GridSize._16X30:
+                return 99;
+
+            default:
+                return 0;
+        }
+    }
+
     public static Definition Instance => instance.Value;
 }
