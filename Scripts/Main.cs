@@ -5,7 +5,7 @@ namespace Minesweeper.Scripts;
 public partial class Main : Control
 {
     [Export]
-    Minesweeper.Misc.Definition.GridSize size = Minesweeper.Misc.Definition.GridSize._9X9;
+    Misc.Definition.GridSize size = Misc.Definition.GridSize._9X9;
 
     /*START DEBUUGERR */
     RichTextLabel label;
@@ -17,9 +17,9 @@ public partial class Main : Control
 
     private int flagCount = 0;
 
-    private System.Collections.Generic.HashSet<int> bombIndices = new();
+    private readonly System.Collections.Generic.HashSet<int> bombIndices = [];
 
-    Minesweeper.Misc.Definition definition = Minesweeper.Misc.Definition.Instance;
+    private readonly Misc.Definition definition = Misc.Definition.Instance;
 
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
@@ -101,15 +101,10 @@ public partial class Main : Control
             var btn = copies[index];
 
             if (btn == clicked)
-            {
                 btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.EXPLODE);
-                btn.TexturePressed = Activity.GetTexture(Activity.ButtonType.EXPLODE);
-            }
             else
-            {
-                btn.TexturePressed = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
                 btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
-            }
+
             btn.Disabled = true;
         }
     }
