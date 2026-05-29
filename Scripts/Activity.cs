@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 
@@ -5,6 +6,11 @@ namespace Minesweeper.Scripts;
 
 public partial class Activity : Control
 {
+    [Export] private Texture2D _maskedTile;
+    [Export] private Texture2D _revealedTileBomb;
+    [Export] private Texture2D _maskedTileQuestionMark;
+    [Export] private Texture2D _maskedTileFlag;
+
     public enum ButtonType
     {
         BUTTON,
@@ -23,29 +29,16 @@ public partial class Activity : Control
         DISABLED,
     }
 
-    private readonly System.Collections.Generic.Dictionary<ButtonType, TextureButton> buttonDict =
-    [];
-
-    private static readonly System.Collections.Generic.Dictionary<
-        ButtonType,
-        Texture2D
-    > textureMap = new()
-    {
-        { ButtonType.BUTTON, GD.Load<Texture2D>("res://Assets/icons/masked_tile.png") },
-        { ButtonType.EXPLODE, GD.Load<Texture2D>("res://Assets/icons/tile_exploded.png") },
-        {
-            ButtonType.REVEALEDBOMB,
-            GD.Load<Texture2D>("res://Assets/icons/revealed_tile_bomb.png")
-        },
-        {
-            ButtonType.QUESTIONMARK,
-            GD.Load<Texture2D>("res://Assets/icons/masked_tile_question_mark.png")
-        },
-        { ButtonType.REDFLAG, GD.Load<Texture2D>("res://Assets/icons/masked_tile_flag.png") },
-    };
+    private readonly Dictionary<ButtonType, TextureButton> buttonDict = [];
+    private static readonly Dictionary<ButtonType, Texture2D> textureMap = [];
 
     public override void _Ready()
     {
+        textureMap.Add(ButtonType.BUTTON, _maskedTile);
+        textureMap.Add(ButtonType.EXPLODE, _revealedTileBomb);
+        textureMap.Add(ButtonType.QUESTIONMARK, _maskedTileQuestionMark);
+        textureMap.Add(ButtonType.REDFLAG, _maskedTileFlag);
+
         // SET — populate dictionary by button name
         foreach (Node child in GetChildren())
         {
