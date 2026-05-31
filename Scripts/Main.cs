@@ -5,7 +5,7 @@ namespace Minesweeper.Scripts;
 public partial class Main : Control
 {
     [Export]
-    Misc.Definition.GridSize size = Misc.Definition.GridSize._9X9;
+    public Misc.Definition.GridSize size = Misc.Definition.GridSize._9X9;
 
     /*START DEBUUGERR */
     RichTextLabel label;
@@ -70,8 +70,9 @@ public partial class Main : Control
         int bombCount = definition.GetCalculatedBomb(size);
 
         var rng = new RandomNumberGenerator();
+
         while (bombIndices.Count < bombCount)
-            bombIndices.Add(rng.RandiRange(0, count));
+            bombIndices.Add(rng.RandiRange(0, count - 1));
 
         for (int i = 0; i < count; i++)
         {
@@ -96,16 +97,35 @@ public partial class Main : Control
     {
         GD.Print("Reveal All Bombs");
 
+        // Handle bomb buttons
         foreach (var index in bombIndices)
         {
             var btn = copies[index];
 
             if (btn == clicked)
+            {
+                // Clicked bomb shows EXPLODE
+                btn.TextureNormal = Activity.GetTexture(Activity.ButtonType.EXPLODE);
                 btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.EXPLODE);
+            }
             else
+            {
+                // Other bombs show REVEALEDBOMB
+                btn.TextureNormal = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
                 btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.REVEALEDBOMB);
+            }
 
             btn.Disabled = true;
+        }
+
+        // Disable all non-bomb buttons
+        for (int i = 0; i < copies.Count; i++)
+        {
+            if (!bombIndices.Contains(i))
+            {
+                copies[i].TextureDisabled = Activity.GetTexture(Activity.ButtonType.DISABLED);
+                copies[i].Disabled = true;
+            }
         }
     }
 
