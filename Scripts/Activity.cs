@@ -25,6 +25,9 @@ public partial class Activity : Control
     private Texture2D _maskedTileFlag;
 
     [Export]
+    private Texture2D _revealedButton;
+
+    [Export]
     private Godot.Collections.Array<Texture2D> _numbers = [];
 
     public enum ButtonType
@@ -35,6 +38,7 @@ public partial class Activity : Control
         REDFLAG,
         QUESTIONMARK,
         DISABLED,
+        REVEALED,
         NUMBER_ONE,
         NUMBER_TWO,
         NUMBER_THREE,
@@ -56,6 +60,7 @@ public partial class Activity : Control
         textureMap.Add(ButtonType.REDFLAG, _maskedTileFlag);
         textureMap.Add(ButtonType.EXPLODE, _explodedTileBomb);
         textureMap.Add(ButtonType.DISABLED, _disabledTile);
+        textureMap.Add(ButtonType.REVEALED, _revealedButton);
 
         for (int i = 0; i < _numbers.Count; i++)
             textureMap[ButtonType.NUMBER_ONE + i] = _numbers[i];

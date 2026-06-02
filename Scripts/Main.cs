@@ -39,6 +39,8 @@ public partial class Main : Control
 
     private readonly System.Collections.Generic.List<TextureButton> copies = [];
 
+    private int[] adjacentBombs;
+
     public override void _Ready()
     {
         /*----------------*/
@@ -90,6 +92,8 @@ public partial class Main : Control
             mainBox.AddChild(copies[i]);
         }
 
+        CalculateAdjacentBombs();
+
         GD.Print(
             $"Total copies {copies.Count} Grid Columns {mainBox.Columns} Bomb-count {bombCount}"
         );
@@ -131,6 +135,110 @@ public partial class Main : Control
                 else
                     copies[i].TextureDisabled = Activity.GetTexture(Activity.ButtonType.DISABLED);
                 copies[i].Disabled = true;
+            }
+        }
+    }
+
+    private void CalculateAdjacentBombs()
+    {
+        adjacentBombs = new int[copies.Count];
+        int cols = mainBox.Columns;
+        int rows = copies.Count / cols;
+
+        for (int i = 0; i < copies.Count; i++)
+        {
+            if (bombIndices.Contains(i))
+                continue;
+
+            int x = i % cols;
+            int y = i / cols;
+            int count = 0;
+
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx < 0 || nx >= cols || ny < 0 || ny >= rows)
+                        continue;
+                    int neighbor = ny * cols + nx;
+                    if (bombIndices.Contains(neighbor))
+                        count++;
+                }
+            }
+
+            adjacentBombs[i] = count;
+        }
+    }
+
+    private void RevealCell(int startIndex)
+    {
+        if (startIndex < 0 || startIndex >= copies.Count)
+            return;
+        if (bombIndices.Contains(startIndex))
+            return;
+
+        System.Collections.Generic.Queue<int> toReveal = new();
+        toReveal.Enqueue(startIndex);
+
+        int cols = mainBox.Columns;
+        int rows = copies.Count / cols;
+
+        while (toReveal.Count > 0)
+        {
+            int index = toReveal.Dequeue();
+
+            if (clickedIndices.Contains(index))
+                continue;
+            if (bombIndices.Contains(index))
+                continue;
+
+            clickedIndices.Add(index);
+            var btn = copies[index];
+            btn.Disabled = true;
+
+            int bombs = adjacentBombs[index];
+
+            if (bombs > 0)
+            {
+                var numberType = (Activity.ButtonType)(
+                    (int)Activity.ButtonType.NUMBER_ONE + bombs - 1
+                );
+                btn.TextureNormal = Activity.GetTexture(numberType);
+                btn.TextureDisabled = Activity.GetTexture(numberType);
+                continue;
+            }
+
+            // Empty cell
+            btn.TextureNormal = Activity.GetTexture(Activity.ButtonType.REVEALED);
+            btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.REVEALED);
+
+            int x = index % cols;
+            int y = index / cols;
+
+            for (int dy = -1; dy <= 1; dy++)
+            {
+                for (int dx = -1; dx <= 1; dx++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
+                    int nx = x + dx;
+                    int ny = y + dy;
+                    if (nx < 0 || nx >= cols || ny < 0 || ny >= rows)
+                        continue;
+
+                    int neighborIndex = ny * cols + nx;
+                    if (
+                        !clickedIndices.Contains(neighborIndex)
+                        && !bombIndices.Contains(neighborIndex)
+                    )
+                    {
+                        toReveal.Enqueue(neighborIndex);
+                    }
+                }
             }
         }
     }
@@ -188,10 +296,12 @@ public partial class Main : Control
                         btn.Disabled = true;
 
                         var index = copies.IndexOf(btn);
-                        clickedIndices.Add(index);
+                        //clickedIndices.Add(index);
 
                         if (type == Activity.ButtonType.EXPLODE)
                             RevealAllBombs(btn);
+                        else
+                            RevealCell(index);
 
                         GD.PrintRich(
                             $"[color=#eb7821]LEFT CLICKED {btn.Disabled} Button Type {type} [/color]"
