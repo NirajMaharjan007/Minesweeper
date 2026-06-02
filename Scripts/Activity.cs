@@ -24,6 +24,9 @@ public partial class Activity : Control
     [Export]
     private Texture2D _maskedTileFlag;
 
+    [Export]
+    private Godot.Collections.Array<Texture2D> _numbers = [];
+
     public enum ButtonType
     {
         BUTTON,
@@ -31,6 +34,7 @@ public partial class Activity : Control
         REVEALEDBOMB,
         REDFLAG,
         QUESTIONMARK,
+        DISABLED,
         NUMBER_ONE,
         NUMBER_TWO,
         NUMBER_THREE,
@@ -39,7 +43,6 @@ public partial class Activity : Control
         NUMBER_SIX,
         NUMBER_SEVEN,
         NUMBER_EIGHT,
-        DISABLED,
     }
 
     private readonly Dictionary<ButtonType, TextureButton> buttonDict = [];
@@ -53,6 +56,9 @@ public partial class Activity : Control
         textureMap.Add(ButtonType.REDFLAG, _maskedTileFlag);
         textureMap.Add(ButtonType.EXPLODE, _explodedTileBomb);
         textureMap.Add(ButtonType.DISABLED, _disabledTile);
+
+        for (int i = 0; i < _numbers.Count; i++)
+            textureMap[ButtonType.NUMBER_ONE + i] = _numbers[i];
 
         // SET — populate dictionary by button name
         foreach (Node child in GetChildren())

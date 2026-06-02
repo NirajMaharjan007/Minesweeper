@@ -7,6 +7,14 @@
 [ext_resource type="Texture2D" uid="uid://l3w3fy4gr5y2" path="res://Assets/icons/tile_exploded.png" id="5_4kpch"]
 [ext_resource type="Texture2D" uid="uid://bcplkgqkp0vbo" path="res://Assets/icons/masked_tile_question_mark.png" id="6_grg3l"]
 [ext_resource type="Texture2D" uid="uid://pejlb0bp4f3o" path="res://Assets/icons/masked_tile_flag.png" id="7_frkhe"]
+[ext_resource type="Texture2D" uid="uid://cft1vxun4v2hi" path="res://Assets/icons/revealed_tile_1.png" id="8_h1m7h"]
+[ext_resource type="Texture2D" uid="uid://dhy8jdas1mbk8" path="res://Assets/icons/revealed_tile_2.png" id="9_erwvk"]
+[ext_resource type="Texture2D" uid="uid://dieb4lr1vxyi3" path="res://Assets/icons/revealed_tile_3.png" id="10_2w5on"]
+[ext_resource type="Texture2D" uid="uid://1p2hmm8glipl" path="res://Assets/icons/revealed_tile_4.png" id="11_346fj"]
+[ext_resource type="Texture2D" uid="uid://4ki336ruu1tu" path="res://Assets/icons/revealed_tile_5.png" id="12_0sclb"]
+[ext_resource type="Texture2D" uid="uid://vt2r5iasnq64" path="res://Assets/icons/revealed_tile_6.png" id="13_sxkr1"]
+[ext_resource type="Texture2D" uid="uid://sdae627idh8v" path="res://Assets/icons/revealed_tile_7.png" id="14_fq0cl"]
+[ext_resource type="Texture2D" uid="uid://cqcd1cg3lw70v" path="res://Assets/icons/revealed_tile_8.png" id="15_hwpts"]
 
 [node name="Main" type="Control" unique_id=826849891]
 layout_mode = 3
@@ -29,6 +37,7 @@ _explodedTileBomb = ExtResource("5_4kpch")
 _maskedTileQuestionMark = ExtResource("6_grg3l")
 _disabledTile = ExtResource("3_vy5pj")
 _maskedTileFlag = ExtResource("7_frkhe")
+_numbers = Array[Texture2D]([ExtResource("8_h1m7h"), ExtResource("9_erwvk"), ExtResource("10_2w5on"), ExtResource("11_346fj"), ExtResource("12_0sclb"), ExtResource("13_sxkr1"), ExtResource("14_fq0cl"), ExtResource("15_hwpts")])
 
 [node name="Debugger" type="RichTextLabel" parent="." unique_id=1441650709]
 layout_mode = 1
