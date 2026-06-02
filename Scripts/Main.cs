@@ -28,6 +28,8 @@ public partial class Main : Control
 
     private readonly System.Collections.Generic.Dictionary<TextureButton, int> buttonStates = [];
 
+    private readonly System.Collections.Generic.HashSet<int> clickedIndices = [];
+
     private readonly Activity.ButtonType[] states =
     [
         Activity.ButtonType.BUTTON,
@@ -123,7 +125,11 @@ public partial class Main : Control
         {
             if (!bombIndices.Contains(i))
             {
-                copies[i].TextureDisabled = Activity.GetTexture(Activity.ButtonType.DISABLED);
+                if (clickedIndices.Contains(i))
+                    // already revealed, leave as is
+                    continue;
+                else
+                    copies[i].TextureDisabled = Activity.GetTexture(Activity.ButtonType.DISABLED);
                 copies[i].Disabled = true;
             }
         }
@@ -180,6 +186,9 @@ public partial class Main : Control
                             return;
 
                         btn.Disabled = true;
+
+                        var index = copies.IndexOf(btn);
+                        clickedIndices.Add(index);
 
                         if (type == Activity.ButtonType.EXPLODE)
                             RevealAllBombs(btn);
