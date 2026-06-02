@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://brst6gwedwjmn" path="res://Assets/icons/revealed_tile_bomb.png" id="4_bmxlf"]
 [ext_resource type="Texture2D" uid="uid://l3w3fy4gr5y2" path="res://Assets/icons/tile_exploded.png" id="5_4kpch"]
 [ext_resource type="Texture2D" uid="uid://bcplkgqkp0vbo" path="res://Assets/icons/masked_tile_question_mark.png" id="6_grg3l"]
+[ext_resource type="Texture2D" uid="uid://4pmvaew4lgt2" path="res://Assets/icons/revealed_tile.png" id="7_50glp"]
 [ext_resource type="Texture2D" uid="uid://pejlb0bp4f3o" path="res://Assets/icons/masked_tile_flag.png" id="7_frkhe"]
 [ext_resource type="Texture2D" uid="uid://cft1vxun4v2hi" path="res://Assets/icons/revealed_tile_1.png" id="8_h1m7h"]
 [ext_resource type="Texture2D" uid="uid://dhy8jdas1mbk8" path="res://Assets/icons/revealed_tile_2.png" id="9_erwvk"]
@@ -37,6 +38,7 @@ _explodedTileBomb = ExtResource("5_4kpch")
 _maskedTileQuestionMark = ExtResource("6_grg3l")
 _disabledTile = ExtResource("3_vy5pj")
 _maskedTileFlag = ExtResource("7_frkhe")
+_revealedButton = ExtResource("7_50glp")
 _numbers = Array[Texture2D]([ExtResource("8_h1m7h"), ExtResource("9_erwvk"), ExtResource("10_2w5on"), ExtResource("11_346fj"), ExtResource("12_0sclb"), ExtResource("13_sxkr1"), ExtResource("14_fq0cl"), ExtResource("15_hwpts")])
 
 [node name="Debugger" type="RichTextLabel" parent="." unique_id=1441650709]

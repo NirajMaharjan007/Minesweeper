@@ -162,3 +162,14 @@ offset_bottom = 32.0
 disabled = true
 button_mask = 0
 texture_normal = ExtResource("2_uqq73")
+
+[node name="Revealed" type="TextureButton" parent="." unique_id=1655849597]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 80.0
+offset_bottom = 48.0
+disabled = true
+button_mask = 0
+texture_normal = ExtResource("3_qpnnd")
+texture_disabled = ExtResource("3_qpnnd")
