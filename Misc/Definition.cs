@@ -2,16 +2,16 @@ namespace Minesweeper.Misc;
 
 public sealed class Definition
 {
-    private static readonly System.Lazy<Definition> instance = new(() => new());
-
-    private Definition() { }
-
     public enum GridSize
     {
         _9X9,
         _16X16,
         _16X30,
     }
+
+    private static readonly System.Lazy<Definition> instance = new(() => new());
+
+    private Definition() { }
 
     public int GetCalculateColumn(GridSize size)
     {
@@ -62,6 +62,24 @@ public sealed class Definition
 
             default:
                 return 0;
+        }
+    }
+
+    public string GetDifficultStatus(GridSize size)
+    {
+        switch (size)
+        {
+            case GridSize._9X9:
+                return "Eazy";
+
+            case GridSize._16X16:
+                return "Medium";
+
+            case GridSize._16X30:
+                return "Hard";
+
+            default:
+                return "N/A";
         }
     }
 
