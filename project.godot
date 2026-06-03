@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Minesweeper"
-run/main_scene="uid://bibefbqahuspt"
+run/main_scene="uid://ts1ubyb2104c"
 config/features=PackedStringArray("4.6", "C#", "GL Compatibility")
 boot_splash/show_image=false
 config/icon="res://icon.svg"

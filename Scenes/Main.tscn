@@ -27,6 +27,7 @@ grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 script = ExtResource("1_jw32o")
+size = 1
 
 [node name="Activity" parent="." unique_id=871383622 instance=ExtResource("2_idj7w")]
 layout_mode = 0

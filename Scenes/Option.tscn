@@ -1,0 +1,121 @@
+[gd_scene format=3 uid="uid://ts1ubyb2104c"]
+
+[ext_resource type="Script" uid="uid://cgcukwf8pf8kt" path="res://Scripts/Option.cs" id="1_qum3a"]
+[ext_resource type="FontFile" uid="uid://bjdcjdxa8v60x" path="res://Assets/font/Inter_18pt-Medium.ttf" id="1_wuxk4"]
+[ext_resource type="Texture2D" uid="uid://bp35v3i0fc3qh" path="res://Assets/UI/Box.png" id="3_2a33a"]
+[ext_resource type="Texture2D" uid="uid://cgluvxdpob7oa" path="res://Assets/UI/CustomTextureButton/Normal.png" id="4_uojhp"]
+[ext_resource type="Texture2D" uid="uid://cc8t68xv8ug2x" path="res://Assets/UI/CustomTextureButton/Press.png" id="5_ehaem"]
+[ext_resource type="Texture2D" uid="uid://dr8qxl0pgun0c" path="res://Assets/UI/CustomTextureButton/Hover.png" id="6_mdp3b"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uojhp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_qum3a"]
+font = ExtResource("1_wuxk4")
+font_size = 9
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qum3a"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+texture = ExtResource("3_2a33a")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2a33a"]
+content_margin_left = 0.0
+content_margin_top = 4.0
+content_margin_right = 0.0
+content_margin_bottom = 4.0
+
+[node name="Option" type="Control" unique_id=456007831]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+script = ExtResource("1_qum3a")
+
+[node name="MainContainer" type="VBoxContainer" parent="." unique_id=901201781]
+clip_contents = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+
+[node name="MainPanel" type="PanelContainer" parent="MainContainer" unique_id=2040011001]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_uojhp")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MainPanel" unique_id=210856675]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="OptionButton" type="OptionButton" parent="MainContainer/MainPanel/HBoxContainer" unique_id=47073663]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/icon_max_width = 12
+theme_override_fonts/font = ExtResource("1_wuxk4")
+theme_override_font_sizes/font_size = 8
+theme_override_constants/arrow_margin = 2
+alignment = 1
+item_count = 1
+popup/item_0/id = 0
+
+[node name="Label" type="Label" parent="MainContainer/MainPanel/HBoxContainer" unique_id=1310750185]
+layout_mode = 2
+text = "Choose the Size"
+label_settings = SubResource("LabelSettings_qum3a")
+horizontal_alignment = 1
+
+[node name="PanelContainer" type="PanelContainer" parent="MainContainer" unique_id=1885111996]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxTexture_qum3a")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/PanelContainer" unique_id=1351075114]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="RichTextLabel" parent="MainContainer/PanelContainer/VBoxContainer" unique_id=1111253472]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 9
+bbcode_enabled = true
+text = "Description"
+fit_content = true
+
+[node name="Body" type="RichTextLabel" parent="MainContainer/PanelContainer/VBoxContainer" unique_id=272615824]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/normal_font_size = 6
+bbcode_enabled = true
+text = "THIS is Description
+"
+fit_content = true
+
+[node name="ButtonsPanel" type="PanelContainer" parent="MainContainer" unique_id=1717855816]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_2a33a")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonsPanel" unique_id=943931995]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="MainContainer/ButtonsPanel/HBoxContainer" unique_id=1265665319]
+layout_mode = 2
+texture_normal = ExtResource("4_uojhp")
+texture_pressed = ExtResource("5_ehaem")
+texture_hover = ExtResource("6_mdp3b")
