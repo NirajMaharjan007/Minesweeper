@@ -18,7 +18,7 @@ content_margin_bottom = 4.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_qum3a"]
 font = ExtResource("1_wuxk4")
-font_size = 11
+font_size = 14
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qum3a"]
 content_margin_left = 10.0
@@ -78,11 +78,9 @@ size_flags_horizontal = 3
 size_flags_vertical = 4
 theme_override_constants/icon_max_width = 12
 theme_override_fonts/font = ExtResource("1_wuxk4")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 14
 theme_override_constants/arrow_margin = 2
 alignment = 1
-item_count = 1
-popup/item_0/id = 0
 
 [node name="Label" type="Label" parent="MainContainer/MainPanel/HBoxContainer" unique_id=1310750185]
 layout_mode = 2
@@ -103,7 +101,7 @@ theme_override_constants/separation = 0
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 11
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
 text = "Description"
 fit_content = true
@@ -113,7 +111,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_colors/default_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/normal_font_size = 9
+theme_override_font_sizes/normal_font_size = 11
+theme_override_font_sizes/bold_font_size = 11
+theme_override_font_sizes/bold_italics_font_size = 11
+theme_override_font_sizes/italics_font_size = 11
+theme_override_font_sizes/mono_font_size = 11
 bbcode_enabled = true
 text = "THIS is Description
 "
@@ -133,7 +135,7 @@ texture_normal = ExtResource("4_rsc8u")
 texture_pressed = ExtResource("5_ggfuv")
 texture_hover = ExtResource("6_ma7xk")
 
-[node name="TextureButton" type="TextureButton" parent="MainContainer/ButtonsPanel/HBoxContainer" unique_id=873326398]
+[node name="Cancel" type="TextureButton" parent="MainContainer/ButtonsPanel/HBoxContainer" unique_id=873326398]
 layout_mode = 2
 texture_normal = ExtResource("7_bkpnk")
 texture_pressed = ExtResource("8_3l56a")
