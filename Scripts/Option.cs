@@ -36,6 +36,13 @@ public partial class Option : Control
 
     private void Init()
     {
+        Vector2I size = new((int)mainContainer.Size.X, (int)mainContainer.Size.Y);
+
+        var window = GetWindow();
+        window.ContentScaleSize = size;
+        window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
+
         string body = "THIS IS THE BODY";
         bodyLabel.Text = body;
     }
