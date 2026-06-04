@@ -25,9 +25,10 @@ public partial class Option : Control
             .GetNode<PanelContainer>("MainPanel")
             .GetNode<HBoxContainer>("HBoxContainer")
             .GetNode<OptionButton>("OptionButton");
-        optionButton.AddItem(Misc.Definition.GridSize._9X9.ToString(), 0);
-        optionButton.AddItem(Misc.Definition.GridSize._16X16.ToString(), 1);
-        optionButton.AddItem(Misc.Definition.GridSize._16X30.ToString(), 2);
+
+        var items = definition.Items;
+        for (int i = 0; i < items.Count; i++)
+            optionButton.AddItem(items[i].ToString(), i);
 
         bodyLabel = mainContainer
             .GetNode<PanelContainer>("PanelContainer")
@@ -67,8 +68,8 @@ public partial class Option : Control
 
         var window = GetWindow();
         window.ContentScaleSize = size;
-        window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
-        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
+        window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
 
         optionButton.ItemSelected += index =>
         {
@@ -80,10 +81,57 @@ public partial class Option : Control
             GD.Print($"Getter {text}");
         };
 
-        cancelBtn.Pressed += () =>
+        doneBtn.Pressed += HandleChangeScene;
+        cancelBtn.Pressed += OnExitButtonPressed;
+    }
+
+    private async void OnExitButtonPressed()
+    {
+        await FadeAndExit();
+    }
+
+    private async void HandleChangeScene()
+    {
+        await ChangeState();
+    }
+
+    private async System.Threading.Tasks.Task ChangeState()
+    {
+        try { }
+        catch (System.Exception e)
         {
-            GetTree().Quit();
-            System.Environment.Exit(0);
-        };
+            GD.PrintErr("ERROR: " + e.Message);
+            System.Environment.Exit(1);
+        }
+    }
+
+    private async System.Threading.Tasks.Task FadeAndExit()
+    {
+        var fadeRect = new ColorRect();
+        fadeRect.Color = Colors.Black;
+        fadeRect.Size = GetViewport().GetVisibleRect().Size;
+        fadeRect.Modulate = Colors.Transparent;
+        fadeRect.ZIndex = 100;
+        AddChild(fadeRect);
+
+        var tween = CreateTween();
+        tween.TweenProperty(fadeRect, "modulate", Colors.Black, 0.5f);
+        await ToSignal(tween, "finished");
+
+        GetTree().Quit();
+    }
+
+    public override void _ExitTree()
+    {
+        try
+        {
+            doneBtn.Pressed -= HandleChangeScene;
+            cancelBtn.Pressed -= OnExitButtonPressed;
+        }
+        catch (System.Exception e)
+        {
+            GD.PrintErr("FAIL: " + e.Message);
+            System.Environment.Exit(1);
+        }
     }
 }

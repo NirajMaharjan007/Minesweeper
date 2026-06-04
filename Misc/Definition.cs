@@ -11,6 +11,13 @@ public sealed class Definition
 
     private static readonly System.Lazy<Definition> instance = new(() => new());
 
+    private readonly System.Collections.Generic.List<GridSize> _items = new()
+    {
+        GridSize._9X9,
+        GridSize._16X16,
+        GridSize._16X30,
+    };
+
     private Definition() { }
 
     public int GetCalculateColumn(GridSize size)
@@ -84,4 +91,6 @@ public sealed class Definition
     }
 
     public static Definition Instance => instance.Value;
+
+    public System.Collections.Generic.List<GridSize> Items => _items;
 }
