@@ -4,14 +4,6 @@ namespace Minesweeper.Scripts;
 
 public partial class Main : Control
 {
-    [Export]
-    public Misc.Definition.GridSize size = Misc.Definition.GridSize._9X9;
-
-    /*START DEBUUGERR */
-    RichTextLabel label;
-    string text;
-
-    /*--------------*/
     Activity activity;
     GridContainer mainBox;
 
@@ -43,16 +35,12 @@ public partial class Main : Control
 
     public override void _Ready()
     {
-        /*----------------*/
-        label = GetNode<RichTextLabel>("Debugger");
-        /*----------------*/
-
         activity = GetNode<Activity>("Activity");
 
         VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
-        mainBox.Columns = definition.GetCalculateColumn(size);
+        mainBox.Columns = definition.GetCalculateColumn(definition.GridProperty);
 
         Init();
     }
@@ -65,13 +53,13 @@ public partial class Main : Control
     private void Init()
     {
         var window = GetWindow();
-        window.ContentScaleSize = definition.GetCalculateSize(size);
+        window.ContentScaleSize = definition.GetCalculateSize(definition.GridProperty);
         window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
         window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
 
         int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
 
-        int bombCount = definition.GetCalculatedBomb(size);
+        int bombCount = definition.GetCalculatedBomb(definition.GridProperty);
 
         var rng = new RandomNumberGenerator();
 
@@ -269,7 +257,7 @@ public partial class Main : Control
                         // Block adding flag if at max
                         if (
                             currentState == Activity.ButtonType.BUTTON
-                            && flagCount >= definition.GetCalculatedBomb(size)
+                            && flagCount >= definition.GetCalculatedBomb(definition.GridProperty)
                         )
                             return;
 

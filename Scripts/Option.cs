@@ -97,21 +97,31 @@ public partial class Option : Control
 
     private async System.Threading.Tasks.Task ChangeState()
     {
-        try { }
+        try
+        {
+            int selectedId = optionButton.GetSelectedId();
+            var gridSize = (Misc.Definition.GridSize)selectedId;
+
+            definition.GridProperty = gridSize;
+
+            await Misc.SceneManager.LoadScene("res://Scenes/Main.tscn");
+        }
         catch (System.Exception e)
         {
             GD.PrintErr("ERROR: " + e.Message);
-            System.Environment.Exit(1);
+            //System.Environment.Exit(1);
         }
     }
 
     private async System.Threading.Tasks.Task FadeAndExit()
     {
-        var fadeRect = new ColorRect();
-        fadeRect.Color = Colors.Black;
-        fadeRect.Size = GetViewport().GetVisibleRect().Size;
-        fadeRect.Modulate = Colors.Transparent;
-        fadeRect.ZIndex = 100;
+        var fadeRect = new ColorRect
+        {
+            Color = Colors.Black,
+            Size = GetViewport().GetVisibleRect().Size,
+            Modulate = Colors.Transparent,
+            ZIndex = 100,
+        };
         AddChild(fadeRect);
 
         var tween = CreateTween();
