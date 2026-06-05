@@ -18,6 +18,8 @@ public sealed class Definition
         GridSize._16X30,
     };
 
+    private GridSize _size;
+
     private Definition() { }
 
     public int GetCalculateColumn(GridSize size)
@@ -93,4 +95,10 @@ public sealed class Definition
     public static Definition Instance => instance.Value;
 
     public System.Collections.Generic.List<GridSize> Items => _items;
+
+    public GridSize GridProperty
+    {
+        set { _size = value; }
+        get { return _size; }
+    }
 }
