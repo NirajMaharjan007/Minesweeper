@@ -16,6 +16,10 @@ content_margin_top = 4.0
 content_margin_right = 4.0
 content_margin_bottom = 4.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsc8u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ggfuv"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_qum3a"]
 font = ExtResource("1_wuxk4")
 font_size = 14
@@ -79,6 +83,8 @@ size_flags_vertical = 4
 theme_override_constants/icon_max_width = 12
 theme_override_fonts/font = ExtResource("1_wuxk4")
 theme_override_font_sizes/font_size = 14
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_rsc8u")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_ggfuv")
 theme_override_constants/arrow_margin = 2
 alignment = 1
 

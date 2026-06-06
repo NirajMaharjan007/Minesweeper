@@ -9,6 +9,8 @@ public partial class Main : Control
 
     private int flagCount = 0;
 
+    private Popup.Popup popup;
+
     private readonly System.Collections.Generic.HashSet<int> bombIndices = [];
 
     private readonly Misc.Definition definition = Misc.Definition.Instance;
@@ -42,19 +44,16 @@ public partial class Main : Control
         mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = definition.GetCalculateColumn(definition.GridProperty);
 
-        Init();
-    }
+        popup = GetNode<Popup.Popup>("Popup");
 
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+        Init();
     }
 
     private void Init()
     {
         var window = GetWindow();
         window.ContentScaleSize = definition.GetCalculateSize(definition.GridProperty);
-        window.ContentScaleMode = Window.ContentScaleModeEnum.Viewport;
+        window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
         window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
 
         int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
@@ -125,6 +124,8 @@ public partial class Main : Control
                 copies[i].Disabled = true;
             }
         }
+
+        popup.Show();
     }
 
     private void CalculateAdjacentBombs()
