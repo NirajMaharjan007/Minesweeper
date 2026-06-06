@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://cb1pxyrn7ogos"]
+
+[ext_resource type="Script" uid="uid://btp7v1k73ias3" path="res://Popup/Popup.cs" id="1_6mo2q"]
+[ext_resource type="Texture2D" uid="uid://dpopkifwkvr6w" path="res://Assets/UI/Card.png" id="2_nb4p4"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mo2q"]
+bg_color = Color(0.78431374, 0.78431374, 0.78431374, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nb4p4"]
+texture = ExtResource("2_nb4p4")
+
+[node name="Popup" type="Window" unique_id=1275498734]
+transparent_bg = true
+oversampling_override = 1.0
+initial_position = 1
+size = Vector2i(256, 200)
+wrap_controls = true
+unresizable = true
+always_on_top = true
+transparent = true
+unfocusable = true
+popup_window = true
+popup_wm_hint = true
+minimize_disabled = true
+maximize_disabled = true
+max_size = Vector2i(300, 300)
+content_scale_mode = 1
+content_scale_aspect = 1
+script = ExtResource("1_6mo2q")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=468960087]
+offset_right = 256.0
+offset_bottom = 200.0
+size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_6mo2q")
+
+[node name="InnerContainer" type="PanelContainer" parent="PanelContainer" unique_id=61893027]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_nb4p4")
+
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer/InnerContainer" unique_id=381406033]
+layout_mode = 2
