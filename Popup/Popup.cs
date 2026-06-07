@@ -13,6 +13,7 @@ public partial class Popup : Window
     public override void _Ready()
     {
         base._Ready();
+
         CloseRequested += Hide;
 
         Hide();
