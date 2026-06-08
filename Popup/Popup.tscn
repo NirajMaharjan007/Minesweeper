@@ -5,13 +5,17 @@
 [ext_resource type="FontFile" uid="uid://bjdcjdxa8v60x" path="res://Assets/font/Inter_18pt-Medium.ttf" id="3_a2u0n"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6mo2q"]
+content_margin_left = 1.0
+content_margin_top = 1.0
+content_margin_right = 1.0
+content_margin_bottom = 1.0
 bg_color = Color(0.78431374, 0.78431374, 0.78431374, 0)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nb4p4"]
-content_margin_left = 18.0
-content_margin_top = 12.0
-content_margin_right = 16.0
-content_margin_bottom = 12.0
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 texture = ExtResource("2_nb4p4")
 
 [sub_resource type="Theme" id="Theme_nyws6"]
@@ -21,17 +25,15 @@ default_font = ExtResource("3_a2u0n")
 default_font = ExtResource("3_a2u0n")
 
 [node name="Popup" type="Window" unique_id=1275498734]
-transparent_bg = true
 oversampling_override = 1.0
 initial_position = 1
 size = Vector2i(256, 256)
 wrap_controls = true
+transient = true
+transient_to_focused = true
+exclusive = true
 unresizable = true
-borderless = true
-always_on_top = true
-transparent = true
 unfocusable = true
-popup_window = true
 popup_wm_hint = true
 minimize_disabled = true
 maximize_disabled = true
@@ -40,8 +42,11 @@ content_scale_aspect = 1
 script = ExtResource("1_6mo2q")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=468960087]
-offset_right = 256.0
-offset_bottom = 200.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
 theme_override_styles/panel = SubResource("StyleBoxFlat_6mo2q")
@@ -56,7 +61,6 @@ theme_override_constants/separation = 0
 
 [node name="Head" type="RichTextLabel" parent="PanelContainer/InnerContainer/MainContainer" unique_id=1343860795]
 layout_mode = 2
-size_flags_vertical = 0
 theme = SubResource("Theme_nyws6")
 theme_override_colors/default_color = Color(0, 0, 0, 1)
 theme_override_constants/text_highlight_h_padding = 0
@@ -67,6 +71,7 @@ bbcode_enabled = true
 text = "HEAD"
 fit_content = true
 autowrap_mode = 0
+horizontal_alignment = 1
 
 [node name="Body" type="RichTextLabel" parent="PanelContainer/InnerContainer/MainContainer" unique_id=1642350706]
 layout_mode = 2
@@ -78,12 +83,14 @@ theme_override_font_sizes/bold_font_size = 14
 bbcode_enabled = true
 text = "Body"
 fit_content = true
-autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/InnerContainer/MainContainer" unique_id=1425659026]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 10
+size_flags_vertical = 0
+theme_override_constants/separation = 8
 
 [node name="Retry" type="Button" parent="PanelContainer/InnerContainer/MainContainer/HBoxContainer" unique_id=1014920161]
 layout_mode = 2

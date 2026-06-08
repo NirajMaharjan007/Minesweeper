@@ -4,41 +4,66 @@ namespace Minesweeper.Popup;
 
 public partial class Popup : Window
 {
-    [Export]
-    internal Scripts.Main main;
-
     private VBoxContainer mainContainer;
     private PanelContainer container;
+
+    private RichTextLabel head,
+        body;
+
+    private Button retry,
+        exit;
 
     public override void _Ready()
     {
         base._Ready();
 
-        CloseRequested += Hide;
-
-        Hide();
+        CloseRequested += HandleExit;
 
         container = GetNode<PanelContainer>("PanelContainer");
         mainContainer = container
             .GetNode<PanelContainer>("InnerContainer")
             .GetNode<VBoxContainer>("MainContainer");
 
-        Init();
+        head = mainContainer.GetNode<RichTextLabel>("Head");
+        body = mainContainer.GetNode<RichTextLabel>("Body");
+
+        retry = mainContainer.GetNode<HBoxContainer>("HBoxContainer").GetNode<Button>("Retry");
+        exit = mainContainer.GetNode<HBoxContainer>("HBoxContainer").GetNode<Button>("Exit");
+        exit.Pressed += HandleExit;
     }
 
-    private void Init()
+    private async void HandleExit()
     {
-        try
+        await ExitTask();
+    }
+
+    private async System.Threading.Tasks.Task ExitTask()
+    {
+        var fadeRect = new ColorRect
         {
-            if (main is not null) { }
-            else
-            {
-                _ = new System.Exception("Error, We should EXIT With ONE");
-            }
-        }
-        catch (System.Exception e)
-        {
-            GD.PrintErr("ERROR...!!!! " + e.Message);
-        }
+            Color = Colors.Black,
+            Size = GetViewport().GetVisibleRect().Size,
+            Modulate = Colors.Transparent,
+            ZIndex = 100,
+        };
+        AddChild(fadeRect);
+
+        var tween = CreateTween();
+        tween.TweenProperty(fadeRect, "modulate", Colors.Black, 0.5f);
+        await ToSignal(tween, "finished");
+
+        GetTree().Quit();
+    }
+
+    public string HeadText
+    {
+        set => head.Text = value;
+        get => head.Text;
+    }
+
+    public string BodyText
+    {
+        set => body.Text = value;
+        get => body.Text;
     }
 }
