@@ -9,6 +9,13 @@ public sealed class Definition
         _16X30,
     }
 
+    public enum GameState
+    {
+        WON,
+        LOST,
+        PAUSED,
+    }
+
     private static readonly System.Lazy<Definition> instance = new(() => new());
     private GridSize _size;
 
@@ -57,6 +64,38 @@ public sealed class Definition
         };
     }
 
+    public System.Collections.Generic.Dictionary<string, string> GetDescriptionState(
+        GameState state
+    )
+    {
+        return state switch
+        {
+            GameState.WON => new()
+            {
+                { "title", "You Won!" },
+                { "body", "Congratulations! All mines cleared." },
+                // { "color", "#22eb21" },
+            },
+            GameState.LOST => new()
+            {
+                { "title", "Game Over" },
+                { "body", "You hit a mine!" },
+                // { "color", "#eb2121" },
+            },
+            GameState.PAUSED => new()
+            {
+                { "title", "Game Pause!!!!" },
+                { "body", "Game Paused!!!!!" },
+            },
+            _ => new()
+            {
+                { "title", "" },
+                { "body", "" },
+                // { "color", "#ffffff" },
+            },
+        };
+    }
+
     public static Definition Instance => instance.Value;
 
     public System.Collections.Generic.List<GridSize> Items { get; } =
@@ -67,4 +106,6 @@ public sealed class Definition
         set { _size = value; }
         get { return _size; }
     }
+
+    public GameState GameStateProperty { set; get; }
 }
