@@ -45,6 +45,7 @@ public partial class Main : Control
         mainBox.Columns = definition.GetCalculateColumn(definition.GridProperty);
 
         popup = GetNode<Popup.Popup>("Popup");
+        popup.Hide();
 
         Init();
     }
@@ -86,6 +87,25 @@ public partial class Main : Control
         );
     }
 
+    public override void _Input(InputEvent @event)
+    {
+        base._Input(@event);
+        if (@event.IsPressed() && @event is InputEventKey keyEvent)
+        {
+            if (keyEvent.Keycode.Equals(Key.Escape))
+            {
+                GD.Print("AHHH!!! i WAS pRESSED");
+                definition.GameStateProperty = Misc.Definition.GameState.PAUSED;
+                var description = definition.GetDescriptionState(definition.GameStateProperty);
+
+                popup.Title = description["title"];
+                popup.HeadText = description["title"];
+                popup.BodyText = description["body"];
+                popup.Show();
+            }
+        }
+    }
+
     private void RevealAllBombs(TextureButton clicked)
     {
         GD.Print("Reveal All Bombs");
@@ -125,6 +145,12 @@ public partial class Main : Control
             }
         }
 
+        definition.GameStateProperty = Misc.Definition.GameState.LOST;
+        var description = definition.GetDescriptionState(definition.GameStateProperty);
+
+        popup.Title = description["title"];
+        popup.HeadText = description["title"];
+        popup.BodyText = description["body"];
         popup.Show();
     }
 
