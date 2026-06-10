@@ -40,7 +40,7 @@ public partial class Main : Control
     {
         activity = GetNode<Activity>("Activity");
 
-        container = GetNode<VBoxContainer>("VBoxContainer");
+        container = GetNode<PanelContainer>("OutterPanel").GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);

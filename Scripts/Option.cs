@@ -71,7 +71,7 @@ public partial class Option : Control
         var window = GetWindow();
         window.ContentScaleSize = size;
         window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
-        window.ContentScaleAspect = Window.ContentScaleAspectEnum.KeepWidth;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
 
         optionButton.ItemSelected += index =>
         {

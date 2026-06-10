@@ -18,6 +18,8 @@
 [ext_resource type="Texture2D" uid="uid://sdae627idh8v" path="res://Assets/icons/revealed_tile_7.png" id="14_fq0cl"]
 [ext_resource type="Texture2D" uid="uid://cqcd1cg3lw70v" path="res://Assets/icons/revealed_tile_8.png" id="15_hwpts"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2w5on"]
+
 [node name="Main" type="Control" unique_id=826849891]
 layout_mode = 3
 anchors_preset = 15
@@ -45,32 +47,42 @@ _maskedTileFlag = ExtResource("7_frkhe")
 _revealedButton = ExtResource("7_50glp")
 _numbers = Array[Texture2D]([ExtResource("8_h1m7h"), ExtResource("9_erwvk"), ExtResource("10_2w5on"), ExtResource("11_346fj"), ExtResource("12_0sclb"), ExtResource("13_sxkr1"), ExtResource("14_fq0cl"), ExtResource("15_hwpts")])
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=2041138852]
+[node name="OutterPanel" type="PanelContainer" parent="." unique_id=1009407414]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -66.0
+offset_top = -11.5
+offset_right = 66.0
+offset_bottom = 11.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_2w5on")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="OutterPanel" unique_id=2041138852]
+layout_mode = 2
 theme_override_constants/separation = 0
 metadata/_edit_use_anchors_ = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=998012306]
+[node name="MainPanel" type="PanelContainer" parent="OutterPanel/VBoxContainer" unique_id=1914997120]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OutterPanel/VBoxContainer/MainPanel" unique_id=998012306]
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.1
 alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="VBoxContainer/HBoxContainer" unique_id=1914997120]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer/PanelContainer" unique_id=1262626575]
+[node name="Label" type="Label" parent="OutterPanel/VBoxContainer/MainPanel/HBoxContainer" unique_id=1262626575]
 layout_mode = 2
 text = "AKJSDNHkjasdnh"
 
-[node name="MainBox" type="GridContainer" parent="VBoxContainer" unique_id=1678535829]
+[node name="MainBox" type="GridContainer" parent="OutterPanel/VBoxContainer" unique_id=1678535829]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 0
