@@ -10,6 +10,21 @@
 [ext_resource type="Texture2D" uid="uid://dq38bdpd7ydv6" path="res://Assets/UI/CustomTextureButton/Exit/Pressed.png" id="8_3l56a"]
 [ext_resource type="Texture2D" uid="uid://b2xjoeht53x3f" path="res://Assets/UI/CustomTextureButton/Exit/Hover.png" id="9_gxr8t"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ma7xk"]
+content_margin_left = 8.0
+content_margin_top = 8.0
+content_margin_right = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.4117647, 0.4117647, 0.4117647, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 4
+shadow_color = Color(0, 0, 0, 0.5019608)
+shadow_size = 4
+shadow_offset = Vector2(0, 4)
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_uojhp"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -39,44 +54,44 @@ content_margin_bottom = 4.0
 
 [node name="Option" type="Control" unique_id=456007831]
 layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 0.4
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 6
+script = ExtResource("1_qum3a")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1379982943]
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 6
-size_flags_vertical = 6
-script = ExtResource("1_qum3a")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ma7xk")
 
-[node name="MainContainer" type="VBoxContainer" parent="." unique_id=901201781]
+[node name="MainContainer" type="VBoxContainer" parent="PanelContainer" unique_id=901201781]
 clip_contents = true
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -63.0
-offset_bottom = 63.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 theme_override_constants/separation = 6
 
-[node name="OptionLabel" type="Label" parent="MainContainer" unique_id=778466770]
+[node name="OptionLabel" type="Label" parent="PanelContainer/MainContainer" unique_id=778466770]
 layout_mode = 2
 text = "Game Option"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MainPanel" type="PanelContainer" parent="MainContainer" unique_id=2040011001]
+[node name="MainPanel" type="PanelContainer" parent="PanelContainer/MainContainer" unique_id=2040011001]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_uojhp")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/MainPanel" unique_id=210856675]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MainContainer/MainPanel" unique_id=210856675]
 layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 1
 
-[node name="OptionButton" type="OptionButton" parent="MainContainer/MainPanel/HBoxContainer" unique_id=47073663]
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MainContainer/MainPanel/HBoxContainer" unique_id=47073663]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -88,24 +103,24 @@ theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxFlat_ggfuv")
 theme_override_constants/arrow_margin = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MainContainer/MainPanel/HBoxContainer" unique_id=1310750185]
+[node name="Label" type="Label" parent="PanelContainer/MainContainer/MainPanel/HBoxContainer" unique_id=1310750185]
 layout_mode = 2
 text = "Choose the Size"
 label_settings = SubResource("LabelSettings_qum3a")
 horizontal_alignment = 1
 
-[node name="PanelContainer" type="PanelContainer" parent="MainContainer" unique_id=1885111996]
+[node name="PanelContainer" type="PanelContainer" parent="PanelContainer/MainContainer" unique_id=1885111996]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxTexture_qum3a")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/PanelContainer" unique_id=1351075114]
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MainContainer/PanelContainer" unique_id=1351075114]
 layout_mode = 2
 size_flags_vertical = 4
 theme_override_constants/separation = 0
 
-[node name="Title" type="RichTextLabel" parent="MainContainer/PanelContainer/VBoxContainer" unique_id=1111253472]
+[node name="Title" type="RichTextLabel" parent="PanelContainer/MainContainer/PanelContainer/VBoxContainer" unique_id=1111253472]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -116,7 +131,7 @@ bbcode_enabled = true
 text = "Description"
 fit_content = true
 
-[node name="Body" type="RichTextLabel" parent="MainContainer/PanelContainer/VBoxContainer" unique_id=272615824]
+[node name="Body" type="RichTextLabel" parent="PanelContainer/MainContainer/PanelContainer/VBoxContainer" unique_id=272615824]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -131,25 +146,25 @@ text = "THIS is Description
 "
 fit_content = true
 
-[node name="ButtonsPanel" type="PanelContainer" parent="MainContainer" unique_id=1717855816]
+[node name="ButtonsPanel" type="PanelContainer" parent="PanelContainer/MainContainer" unique_id=1717855816]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxTexture_2a33a")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/ButtonsPanel" unique_id=943931995]
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MainContainer/ButtonsPanel" unique_id=943931995]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 alignment = 1
 
-[node name="Done" type="TextureButton" parent="MainContainer/ButtonsPanel/HBoxContainer" unique_id=1265665319]
+[node name="Done" type="TextureButton" parent="PanelContainer/MainContainer/ButtonsPanel/HBoxContainer" unique_id=1265665319]
 layout_mode = 2
 size_flags_horizontal = 3
 texture_normal = ExtResource("4_rsc8u")
 texture_pressed = ExtResource("5_ggfuv")
 texture_hover = ExtResource("6_ma7xk")
 
-[node name="Cancel" type="TextureButton" parent="MainContainer/ButtonsPanel/HBoxContainer" unique_id=873326398]
+[node name="Cancel" type="TextureButton" parent="PanelContainer/MainContainer/ButtonsPanel/HBoxContainer" unique_id=873326398]
 layout_mode = 2
 size_flags_horizontal = 3
 texture_normal = ExtResource("7_bkpnk")
