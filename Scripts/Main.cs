@@ -8,9 +8,15 @@ public partial class Main : Control
     Activity activity;
     GridContainer mainBox;
     VBoxContainer container;
-    private int flagCount = 0;
 
-    private Popup.Popup popup;
+    PanelContainer outerPanel;
+
+    Button retry,
+        exit;
+
+    RichTextLabel label;
+
+    private int flagCount = 0;
 
     private readonly System.Collections.Generic.HashSet<int> bombIndices = [];
 
@@ -40,13 +46,30 @@ public partial class Main : Control
     {
         activity = GetNode<Activity>("Activity");
 
-        container = GetNode<PanelContainer>("OutterPanel").GetNode<VBoxContainer>("VBoxContainer");
+        outerPanel = GetNode<PanelContainer>("OutterPanel");
+
+        container = outerPanel.GetNode<VBoxContainer>("VBoxContainer");
+
+        retry = container
+            .GetNode<PanelContainer>("MainPanel")
+            .GetNode<HBoxContainer>("HBoxContainer")
+            .GetNode<Button>("Retry");
+
+        exit = container
+            .GetNode<PanelContainer>("MainPanel")
+            .GetNode<HBoxContainer>("HBoxContainer")
+            .GetNode<Button>("Exit");
+
+        exit.Pressed += async () => await SceneManager.FadeAndExit(outerPanel);
+
+        label = container
+            .GetNode<PanelContainer>("MainPanel")
+            .GetNode<HBoxContainer>("HBoxContainer")
+            .GetNode<RichTextLabel>("RichTextLabel");
+        label.Text = string.Empty;
 
         mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);
-
-        popup = GetNode<Popup.Popup>("Popup");
-        popup.Hide();
 
         CallDeferred(MethodName.Init);
     }
@@ -128,12 +151,8 @@ public partial class Main : Control
         }
 
         definition.GameStateProperty = Definition.GameState.LOST;
-        var description = definition.GetDescriptionState(definition.GameStateProperty);
 
-        popup.Title = description["title"];
-        popup.HeadText = description["title"];
-        popup.BodyText = description["body"];
-        popup.Show();
+        label.Text = Definition.GetDescriptionState(definition.GameStateProperty);
     }
 
     private void CalculateAdjacentBombs()

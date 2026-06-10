@@ -63,31 +63,13 @@ public sealed class Definition
         };
     }
 
-    public System.Collections.Generic.Dictionary<string, string> GetDescriptionState(
-        GameState state
-    )
+    public static string GetDescriptionState(GameState state)
     {
         return state switch
         {
-            GameState.WON => new()
-            {
-                { "title", "You Won!" },
-                { "body", "Congratulations! All mines cleared." },
-                // { "color", "#22eb21" },
-            },
-            GameState.LOST => new()
-            {
-                { "title", "Game Over" },
-                { "body", "You hit a mine!" },
-                // { "color", "#eb2121" },
-            },
-
-            _ => new()
-            {
-                { "title", "" },
-                { "body", "" },
-                // { "color", "#ffffff" },
-            },
+            GameState.WON => "You WON!!!!",
+            GameState.LOST => "You LOSE!!!!",
+            _ => string.Empty,
         };
     }
 
