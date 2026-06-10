@@ -13,7 +13,6 @@ public sealed class Definition
     {
         WON,
         LOST,
-        PAUSED,
     }
 
     private static readonly System.Lazy<Definition> instance = new(() => new());
@@ -21,7 +20,7 @@ public sealed class Definition
 
     private Definition() { }
 
-    public int GetCalculateColumn(GridSize size)
+    public static int GetCalculateColumn(GridSize size)
     {
         return size switch
         {
@@ -31,7 +30,7 @@ public sealed class Definition
         };
     }
 
-    public Godot.Vector2I GetCalculateSize(GridSize size)
+    public static Godot.Vector2I GetCalculateSize(GridSize size)
     {
         return size switch
         {
@@ -42,7 +41,7 @@ public sealed class Definition
         };
     }
 
-    public int GetCalculatedBomb(GridSize size)
+    public static int GetCalculatedBomb(GridSize size)
     {
         return size switch
         {
@@ -53,7 +52,7 @@ public sealed class Definition
         };
     }
 
-    public string GetDifficultStatus(GridSize size)
+    public static string GetDifficultStatus(GridSize size)
     {
         return size switch
         {
@@ -82,11 +81,7 @@ public sealed class Definition
                 { "body", "You hit a mine!" },
                 // { "color", "#eb2121" },
             },
-            GameState.PAUSED => new()
-            {
-                { "title", "Game Pause!!!!" },
-                { "body", "Game Paused!!!!!" },
-            },
+
             _ => new()
             {
                 { "title", "" },

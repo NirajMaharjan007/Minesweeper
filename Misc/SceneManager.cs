@@ -16,8 +16,6 @@ public partial class SceneManager : Node
         _fadeRect = new ColorRect
         {
             Color = Colors.Black,
-            AnchorRight = 1,
-            AnchorBottom = 1,
             MouseFilter = Control.MouseFilterEnum.Ignore,
             Modulate = new Color(0, 0, 0, 0),
             TopLevel = true,
@@ -28,8 +26,22 @@ public partial class SceneManager : Node
         AddChild(_fadeRect);
     }
 
-    public static async Task LoadScene(string tscnPath)
+    public static async Task LoadScene(string tscnPath, Control anchorNode = null)
     {
+        if (anchorNode is null)
+        {
+            GD.PushWarning("Scene manager Null FOUND, I HAVE RETURN");
+            return;
+        }
+
+        _instance._fadeRect.AnchorTop = anchorNode.AnchorTop;
+        _instance._fadeRect.AnchorBottom = anchorNode.AnchorBottom;
+        _instance._fadeRect.AnchorLeft = anchorNode.AnchorLeft;
+        _instance._fadeRect.AnchorRight = anchorNode.AnchorRight;
+
+        _instance._fadeRect.SetPosition(anchorNode.Position);
+        _instance._fadeRect.SetSize(anchorNode.Size);
+
         // Fade out
         var tween = _instance.CreateTween();
         tween.TweenProperty(_instance._fadeRect, "modulate", new Color(0, 0, 0, 1), 0.5f);
@@ -38,9 +50,47 @@ public partial class SceneManager : Node
         // Load scene
         _instance.GetTree().ChangeSceneToFile(tscnPath);
 
+        // Wait for new scene to be ready
+        await _instance.ToSignal(_instance.GetTree(), "node_added");
+        await _instance.ToSignal(_instance.GetTree(), SceneTree.SignalName.ProcessFrame);
+
         // Fade in
         tween = _instance.CreateTween();
         tween.TweenProperty(_instance._fadeRect, "modulate", new Color(0, 0, 0, 0), 0.5f);
         await _instance.ToSignal(tween, "finished");
+    }
+
+    public static async Task FadeAndExit(Control anchorNode = null)
+    {
+        if (anchorNode is null)
+        {
+            GD.PushWarning("Scene manager Null FOUND, I HAVE RETURN");
+            return;
+        }
+
+        _instance._fadeRect.AnchorTop = anchorNode.AnchorTop;
+        _instance._fadeRect.AnchorBottom = anchorNode.AnchorBottom;
+        _instance._fadeRect.AnchorLeft = anchorNode.AnchorLeft;
+        _instance._fadeRect.AnchorRight = anchorNode.AnchorRight;
+
+        _instance._fadeRect.SetPosition(anchorNode.Position);
+        _instance._fadeRect.SetSize(anchorNode.Size);
+
+        GD.Print($"RECT SIZE {_instance._fadeRect.Size} anchor SIZE {anchorNode.Size}");
+        GD.Print(
+            $"RECT Position {_instance._fadeRect.Position} anchor Postion {anchorNode.Position}"
+        );
+
+        // Force update
+
+        // Move fade rect to be child of anchor node
+        _instance._fadeRect.GetParent().RemoveChild(_instance._fadeRect);
+        anchorNode.AddChild(_instance._fadeRect);
+
+        var tween = _instance.CreateTween();
+        tween.TweenProperty(_instance._fadeRect, "modulate", Colors.Black, 0.5f);
+        await _instance.ToSignal(tween, "finished");
+
+        _instance.GetTree().Quit();
     }
 }
