@@ -1,4 +1,5 @@
 using Godot;
+using Minesweeper.Misc;
 
 namespace Minesweeper.Scripts;
 
@@ -6,14 +7,14 @@ public partial class Main : Control
 {
     Activity activity;
     GridContainer mainBox;
-
+    VBoxContainer container;
     private int flagCount = 0;
 
     private Popup.Popup popup;
 
     private readonly System.Collections.Generic.HashSet<int> bombIndices = [];
 
-    private readonly Misc.Definition definition = Misc.Definition.Instance;
+    private readonly Definition definition = Definition.Instance;
 
     private static readonly Texture2D _redFlagTexture = Activity.GetTexture(
             Activity.ButtonType.REDFLAG
@@ -39,27 +40,27 @@ public partial class Main : Control
     {
         activity = GetNode<Activity>("Activity");
 
-        VBoxContainer container = GetNode<VBoxContainer>("VBoxContainer");
+        container = GetNode<VBoxContainer>("VBoxContainer");
 
         mainBox = container.GetNode<GridContainer>("MainBox");
-        mainBox.Columns = definition.GetCalculateColumn(definition.GridProperty);
+        mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);
 
         popup = GetNode<Popup.Popup>("Popup");
         popup.Hide();
 
-        Init();
+        CallDeferred(MethodName.Init);
     }
 
     private void Init()
     {
         var window = GetWindow();
-        window.ContentScaleSize = definition.GetCalculateSize(definition.GridProperty);
+        window.ContentScaleSize = Definition.GetCalculateSize(definition.GridProperty);
         window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
-        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Expand;
 
-        int count = window.ContentScaleSize.Y * mainBox.Columns / 16;
+        int count = mainBox.GetWindow().ContentScaleSize.Y * mainBox.Columns / 16;
 
-        int bombCount = definition.GetCalculatedBomb(definition.GridProperty);
+        int bombCount = Definition.GetCalculatedBomb(definition.GridProperty);
 
         var rng = new RandomNumberGenerator();
 
@@ -85,25 +86,6 @@ public partial class Main : Control
         GD.Print(
             $"Total copies {copies.Count} Grid Columns {mainBox.Columns} Bomb-count {bombCount}"
         );
-    }
-
-    public override void _Input(InputEvent @event)
-    {
-        base._Input(@event);
-        if (@event.IsPressed() && @event is InputEventKey keyEvent)
-        {
-            if (keyEvent.Keycode.Equals(Key.Escape))
-            {
-                GD.Print("AHHH!!! i WAS pRESSED");
-                definition.GameStateProperty = Misc.Definition.GameState.PAUSED;
-                var description = definition.GetDescriptionState(definition.GameStateProperty);
-
-                popup.Title = description["title"];
-                popup.HeadText = description["title"];
-                popup.BodyText = description["body"];
-                popup.Show();
-            }
-        }
     }
 
     private void RevealAllBombs(TextureButton clicked)
@@ -145,7 +127,7 @@ public partial class Main : Control
             }
         }
 
-        definition.GameStateProperty = Misc.Definition.GameState.LOST;
+        definition.GameStateProperty = Definition.GameState.LOST;
         var description = definition.GetDescriptionState(definition.GameStateProperty);
 
         popup.Title = description["title"];
@@ -284,7 +266,7 @@ public partial class Main : Control
                         // Block adding flag if at max
                         if (
                             currentState == Activity.ButtonType.BUTTON
-                            && flagCount >= definition.GetCalculatedBomb(definition.GridProperty)
+                            && flagCount >= Definition.GetCalculatedBomb(definition.GridProperty)
                         )
                             return;
 

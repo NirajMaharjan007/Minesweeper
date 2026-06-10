@@ -1,4 +1,5 @@
 using Godot;
+using Minesweeper.Misc;
 
 namespace Minesweeper.Scripts;
 
@@ -11,15 +12,16 @@ public partial class Option : Control
     private TextureButton doneBtn,
         cancelBtn;
 
-    private readonly Misc.Definition definition = Misc.Definition.Instance;
+    private readonly Definition definition = Definition.Instance;
 
-    private Misc.Definition.GridSize gridSize;
+    private Definition.GridSize gridSize;
 
     public override void _Ready()
     {
         base._Ready();
 
-        mainContainer = GetNode<VBoxContainer>("MainContainer");
+        mainContainer = GetNode<PanelContainer>("PanelContainer")
+            .GetNode<VBoxContainer>("MainContainer");
 
         optionButton = mainContainer
             .GetNode<PanelContainer>("MainPanel")
@@ -45,7 +47,7 @@ public partial class Option : Control
             .GetNode<HBoxContainer>("HBoxContainer")
             .GetNode<TextureButton>("Cancel");
 
-        Init();
+        CallDeferred(MethodName.Init);
     }
 
     public override void _Process(double delta)
@@ -54,10 +56,10 @@ public partial class Option : Control
 
         string body = string.Empty;
         body +=
-            $"Difficulty: [b]{definition.GetDifficultStatus(gridSize)}[/b]\n"
+            $"Difficulty: [b]{Definition.GetDifficultStatus(gridSize)}[/b]\n"
             + $"Grid Size: [b]{gridSize.ToString().Replace("_", "")}[/b]\n"
-            + $"Acutal Size: [b]{definition.GetCalculateSize(gridSize)}[/b]\n"
-            + $"Total Mines [b]{definition.GetCalculatedBomb(gridSize)}[/b]";
+            + $"Acutal Size: [b]{Definition.GetCalculateSize(gridSize)}[/b]\n"
+            + $"Total Mines [b]{Definition.GetCalculatedBomb(gridSize)}[/b]";
 
         bodyLabel.Text = body;
     }
@@ -69,15 +71,15 @@ public partial class Option : Control
         var window = GetWindow();
         window.ContentScaleSize = size;
         window.ContentScaleMode = Window.ContentScaleModeEnum.CanvasItems;
-        window.ContentScaleAspect = Window.ContentScaleAspectEnum.Keep;
+        window.ContentScaleAspect = Window.ContentScaleAspectEnum.KeepWidth;
 
         optionButton.ItemSelected += index =>
         {
             var text = optionButton.GetItemText((int)index);
-            if (System.Enum.TryParse(text, out Misc.Definition.GridSize parsed))
+            if (System.Enum.TryParse(text, out Definition.GridSize parsed))
                 gridSize = parsed;
 
-            GD.Print($"Definition {definition.GetCalculateColumn(gridSize)}");
+            GD.Print($"Definition {Definition.GetCalculateColumn(gridSize)}");
             GD.Print($"Getter {text}");
         };
 
@@ -87,7 +89,9 @@ public partial class Option : Control
 
     private async void OnExitButtonPressed()
     {
-        await FadeAndExit();
+        var panel = GetNode<PanelContainer>("PanelContainer");
+
+        await SceneManager.FadeAndExit(panel);
     }
 
     private async void HandleChangeScene()
@@ -99,36 +103,20 @@ public partial class Option : Control
     {
         try
         {
+            var panel = GetNode<PanelContainer>("PanelContainer");
+
             int selectedId = optionButton.GetSelectedId();
-            var gridSize = (Misc.Definition.GridSize)selectedId;
+            var gridSize = (Definition.GridSize)selectedId;
 
             definition.GridProperty = gridSize;
 
-            await Misc.SceneManager.LoadScene("res://Scenes/Main.tscn");
+            await SceneManager.LoadScene("res://Scenes/Main.tscn", panel);
         }
         catch (System.Exception e)
         {
             GD.PrintErr("ERROR: " + e.Message);
             //System.Environment.Exit(1);
         }
-    }
-
-    private async System.Threading.Tasks.Task FadeAndExit()
-    {
-        var fadeRect = new ColorRect
-        {
-            Color = Colors.Black,
-            Size = GetViewport().GetVisibleRect().Size,
-            Modulate = Colors.Transparent,
-            ZIndex = 100,
-        };
-        AddChild(fadeRect);
-
-        var tween = CreateTween();
-        tween.TweenProperty(fadeRect, "modulate", Colors.Black, 0.5f);
-        await ToSignal(tween, "finished");
-
-        GetTree().Quit();
     }
 
     public override void _ExitTree()
