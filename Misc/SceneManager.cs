@@ -70,6 +70,34 @@ public partial class SceneManager : Node
         await _instance.ToSignal(tween, "finished");
     }
 
+    public static async Task RestartScene(Control anchorNode = null)
+    {
+        if (anchorNode is null)
+        {
+            GD.PushWarning("THIS IS THE WARING, NODE SEEMS TO NULL (ｰ̀⤙ｰ́ )");
+            return;
+        }
+
+        _instance._fadeRect.SetPosition(anchorNode.GlobalPosition);
+        _instance._fadeRect.SetSize(anchorNode.Size);
+
+        // Fade out
+        var tween = _instance.CreateTween();
+        tween.TweenProperty(_instance._fadeRect, "modulate", new Color(0, 0, 0, 1), 0.5f);
+        await _instance.ToSignal(tween, "finished");
+
+        _instance.GetTree().ReloadCurrentScene();
+
+        // Wait for new scene
+        await _instance.ToSignal(_instance.GetTree(), "node_added");
+        await _instance.ToSignal(_instance.GetTree(), SceneTree.SignalName.ProcessFrame);
+
+        // Fade in
+        tween = _instance.CreateTween();
+        tween.TweenProperty(_instance._fadeRect, "modulate", new Color(0, 0, 0, 0), 0.5f);
+        await _instance.ToSignal(tween, "finished");
+    }
+
     public static async Task FadeAndExit(Control anchorNode = null)
     {
         if (anchorNode is null)

@@ -11,6 +11,7 @@ public sealed class Definition
 
     public enum GameState
     {
+        PLAYING,
         WON,
         LOST,
     }
