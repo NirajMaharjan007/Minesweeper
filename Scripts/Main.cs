@@ -11,10 +11,9 @@ public partial class Main : Control
 
     PanelContainer outerPanel;
 
-    Button retry,
+    Button back,
+        retry,
         exit;
-
-    RichTextLabel label;
 
     private int flagCount = 0;
 
@@ -50,6 +49,12 @@ public partial class Main : Control
 
         container = outerPanel.GetNode<VBoxContainer>("VBoxContainer");
 
+        back = container
+            .GetNode<PanelContainer>("MainPanel")
+            .GetNode<HBoxContainer>("HBoxContainer")
+            .GetNode<Button>("Back");
+        back.Pressed += HandleBack;
+
         retry = container
             .GetNode<PanelContainer>("MainPanel")
             .GetNode<HBoxContainer>("HBoxContainer")
@@ -61,12 +66,6 @@ public partial class Main : Control
             .GetNode<Button>("Exit");
 
         exit.Pressed += async () => await SceneManager.FadeAndExit(outerPanel);
-
-        label = container
-            .GetNode<PanelContainer>("MainPanel")
-            .GetNode<HBoxContainer>("HBoxContainer")
-            .GetNode<RichTextLabel>("RichTextLabel");
-        label.Text = string.Empty;
 
         mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);
@@ -151,8 +150,6 @@ public partial class Main : Control
         }
 
         definition.GameStateProperty = Definition.GameState.LOST;
-
-        label.Text = Definition.GetDescriptionState(definition.GameStateProperty);
     }
 
     private void CalculateAdjacentBombs()
@@ -257,6 +254,11 @@ public partial class Main : Control
                 }
             }
         }
+    }
+
+    private async void HandleBack()
+    {
+        await SceneManager.LoadScene("res://Scenes/Option.tscn", "PanelContainer", outerPanel);
     }
 
     private void HandleButton(TextureButton btn, Activity.ButtonType type)

@@ -54,6 +54,7 @@ public partial class Activity : Control
 
     public override void _Ready()
     {
+        textureMap.Clear();
         textureMap.Add(ButtonType.BUTTON, _maskedTile);
         textureMap.Add(ButtonType.REVEALEDBOMB, _revealedTileBomb);
         textureMap.Add(ButtonType.QUESTIONMARK, _maskedTileQuestionMark);

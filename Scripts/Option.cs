@@ -110,7 +110,7 @@ public partial class Option : Control
 
             definition.GridProperty = gridSize;
 
-            await SceneManager.LoadScene("res://Scenes/Main.tscn", panel);
+            await SceneManager.LoadScene("res://Scenes/Main.tscn", "OutterPanel", panel);
         }
         catch (System.Exception e)
         {
