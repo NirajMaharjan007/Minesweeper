@@ -9,6 +9,8 @@ public partial class SceneManager : Node
 
     private ColorRect _fadeRect;
 
+    private SceneManager() { }
+
     public override void _Ready()
     {
         _instance = this;
@@ -26,11 +28,15 @@ public partial class SceneManager : Node
         AddChild(_fadeRect);
     }
 
-    public static async Task LoadScene(string tscnPath, Control anchorNode = null)
+    public static async Task LoadScene(
+        string tscnPath,
+        string destinationAnchorPath = "",
+        Control anchorNode = null
+    )
     {
-        if (anchorNode is null)
+        if (anchorNode is null || destinationAnchorPath.Equals(""))
         {
-            GD.PushWarning("Scene manager Null FOUND, I HAVE RETURN");
+            GD.PushWarning("Scene manager has found Null Statement, I HAVE RETURN");
             return;
         }
 
@@ -55,6 +61,10 @@ public partial class SceneManager : Node
         await _instance.ToSignal(_instance.GetTree(), SceneTree.SignalName.ProcessFrame);
 
         // Fade in
+        var newAnchor = _instance.GetTree().CurrentScene.GetNode<Control>(destinationAnchorPath);
+        _instance._fadeRect.SetPosition(newAnchor.GlobalPosition);
+        _instance._fadeRect.SetSize(newAnchor.Size);
+
         tween = _instance.CreateTween();
         tween.TweenProperty(_instance._fadeRect, "modulate", new Color(0, 0, 0, 0), 0.5f);
         await _instance.ToSignal(tween, "finished");
