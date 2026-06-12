@@ -40,6 +40,20 @@ default_font = ExtResource("18_346fj")
 [sub_resource type="Theme" id="Theme_0sclb"]
 default_font = ExtResource("18_346fj")
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_346fj"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.4117647, 0.4117647, 0.4117647, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+
+[sub_resource type="Theme" id="Theme_sxkr1"]
+default_font = ExtResource("18_346fj")
+
 [node name="Main" type="Control" unique_id=826849891]
 layout_mode = 3
 anchors_preset = 15
@@ -78,7 +92,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_2w5on")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="OutterPanel" unique_id=2041138852]
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_constants/separation = 0
 metadata/_edit_use_anchors_ = true
 
@@ -126,3 +139,41 @@ size_flags_vertical = 2
 theme_override_constants/h_separation = 0
 theme_override_constants/v_separation = 0
 columns = 9
+
+[node name="BottomPanel" type="PanelContainer" parent="OutterPanel/VBoxContainer" unique_id=675979741]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_styles/panel = SubResource("StyleBoxFlat_346fj")
+
+[node name="TimerContainer" type="HBoxContainer" parent="OutterPanel/VBoxContainer/BottomPanel" unique_id=243070770]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="Timer" type="Label" parent="OutterPanel/VBoxContainer/BottomPanel/TimerContainer" unique_id=278637137]
+layout_mode = 2
+theme = SubResource("Theme_sxkr1")
+theme_override_font_sizes/font_size = 11
+text = "Timer:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Counter" type="Label" parent="OutterPanel/VBoxContainer/BottomPanel/TimerContainer" unique_id=931109496]
+layout_mode = 2
+theme = SubResource("Theme_sxkr1")
+theme_override_font_sizes/font_size = 11
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="OutterPanel/VBoxContainer/BottomPanel" unique_id=1973558098]
+layout_mode = 2
+size_flags_horizontal = 8
+
+[node name="Status" type="Label" parent="OutterPanel/VBoxContainer/BottomPanel/HBoxContainer" unique_id=794762521]
+layout_mode = 2
+theme = SubResource("Theme_sxkr1")
+theme_override_font_sizes/font_size = 11
+text = "......."
+horizontal_alignment = 1
+vertical_alignment = 1

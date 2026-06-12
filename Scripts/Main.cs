@@ -15,6 +15,11 @@ public partial class Main : Control
         retry,
         exit;
 
+    Label timer,
+        status;
+
+    private float elapsed = 0f;
+
     private int flagCount = 0;
 
     private readonly System.Collections.Generic.HashSet<int> bombIndices = [];
@@ -43,22 +48,39 @@ public partial class Main : Control
 
     public override void _Ready()
     {
+        definition.GameStateProperty = Definition.GameState.PLAYING;
+
         activity = GetNode<Activity>("Activity");
 
         outerPanel = GetNode<PanelContainer>("OutterPanel");
 
         container = outerPanel.GetNode<VBoxContainer>("VBoxContainer");
 
+        timer = container
+            .GetNode<PanelContainer>("BottomPanel")
+            .GetNode<HBoxContainer>("TimerContainer")
+            .GetNode<Label>("Counter");
+
+        status = container
+            .GetNode<PanelContainer>("BottomPanel")
+            .GetNode<HBoxContainer>("HBoxContainer")
+            .GetNode<Label>("Status");
+
+        status.Text = string.Empty;
+
         back = container
             .GetNode<PanelContainer>("MainPanel")
             .GetNode<HBoxContainer>("HBoxContainer")
             .GetNode<Button>("Back");
+
         back.Pressed += HandleBack;
 
         retry = container
             .GetNode<PanelContainer>("MainPanel")
             .GetNode<HBoxContainer>("HBoxContainer")
             .GetNode<Button>("Retry");
+
+        retry.Pressed += HandleRetry;
 
         exit = container
             .GetNode<PanelContainer>("MainPanel")
@@ -71,6 +93,24 @@ public partial class Main : Control
         mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);
 
         CallDeferred(MethodName.Init);
+    }
+
+    public override void _Process(double delta)
+    {
+        if (definition.GameStateProperty is not Definition.GameState.PLAYING)
+        {
+            status.Text = Definition.GetDescriptionState(definition.GameStateProperty);
+            return;
+        }
+        elapsed += (float)delta;
+        UpdateDisplay();
+    }
+
+    private void UpdateDisplay()
+    {
+        int minutes = (int)elapsed / 60;
+        int seconds = (int)elapsed % 60;
+        timer.Text = $"{minutes:00}:{seconds:00}";
     }
 
     private void Init()
@@ -112,7 +152,9 @@ public partial class Main : Control
 
     private void RevealAllBombs(TextureButton clicked)
     {
-        GD.Print("Reveal All Bombs");
+        definition.GameStateProperty = Definition.GameState.LOST;
+
+        GD.Print($"Reveal All Bombs {definition.GameStateProperty}");
 
         // Handle bomb buttons
         foreach (var index in bombIndices)
@@ -259,6 +301,13 @@ public partial class Main : Control
     private async void HandleBack()
     {
         await SceneManager.LoadScene("res://Scenes/Option.tscn", "PanelContainer", outerPanel);
+    }
+
+    private async void HandleRetry()
+    {
+        definition.GameStateProperty = Definition.GameState.PLAYING;
+        status.Text = string.Empty;
+        await SceneManager.RestartScene(mainBox);
     }
 
     private void HandleButton(TextureButton btn, Activity.ButtonType type)
