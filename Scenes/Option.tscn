@@ -60,17 +60,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
-size_flags_vertical = 6
+size_flags_vertical = 2
 script = ExtResource("1_qum3a")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1379982943]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -92.5
-offset_bottom = 92.5
+anchors_preset = -1
+anchor_left = 0.156
+anchor_top = 0.36800003
+anchor_right = 0.84400004
+anchor_bottom = 0.632
+offset_left = 0.07999802
+offset_top = -0.10003662
+offset_right = -0.08001709
+offset_bottom = 0.099975586
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ma7xk")

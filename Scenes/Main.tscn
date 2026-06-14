@@ -80,12 +80,14 @@ _numbers = Array[Texture2D]([ExtResource("8_h1m7h"), ExtResource("9_erwvk"), Ext
 
 [node name="OutterPanel" type="PanelContainer" parent="." unique_id=1009407414]
 layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -15.5
-offset_bottom = 15.5
+anchors_preset = -1
+anchor_left = 0.3
+anchor_top = 0.462
+anchor_right = 0.70000005
+anchor_bottom = 0.53800005
+offset_top = 0.1000061
+offset_right = -1.5258789e-05
+offset_bottom = -0.10003662
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_2w5on")

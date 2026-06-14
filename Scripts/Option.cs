@@ -66,9 +66,10 @@ public partial class Option : Control
 
     private void Init()
     {
-        //Vector2I size = new((int)mainContainer.Size.X, (int)mainContainer.Size.Y);
+        var panel = GetNode<PanelContainer>("PanelContainer");
+        Vector2I size = new((int)panel.Size.X, (int)panel.Size.Y);
 
-        Vector2I size = new(GetWindow().Size.X, GetWindow().Size.Y);
+        //Vector2I size = new(GetWindow().Size.X, GetWindow().Size.Y);
 
         var window = GetWindow();
         window.ContentScaleSize = size;
