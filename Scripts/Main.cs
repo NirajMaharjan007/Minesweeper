@@ -190,8 +190,6 @@ public partial class Main : Control
                 copies[i].Disabled = true;
             }
         }
-
-        definition.GameStateProperty = Definition.GameState.LOST;
     }
 
     private void CalculateAdjacentBombs()
@@ -298,6 +296,47 @@ public partial class Main : Control
         }
     }
 
+    private void CheckWinCondition()
+    {
+        int revealedSafe = 0;
+        int totalSafe = copies.Count - bombIndices.Count;
+
+        foreach (var btn in copies)
+        {
+            int idx = copies.IndexOf(btn);
+            bool isBomb = bombIndices.Contains(idx);
+
+            if (btn.Disabled && !isBomb)
+                revealedSafe++;
+        }
+
+        if (revealedSafe == totalSafe)
+        {
+            definition.GameStateProperty = Definition.GameState.WON;
+            ChangeMines();
+        }
+    }
+
+    private void ChangeMines()
+    {
+        foreach (var index in bombIndices)
+        {
+            var btn = copies[index];
+            btn.TextureNormal = Activity.GetTexture(Activity.ButtonType.REDFLAG);
+            btn.TextureDisabled = Activity.GetTexture(Activity.ButtonType.REDFLAG);
+            btn.Disabled = true;
+        }
+
+        // Disable all non-bomb buttons
+        for (int i = 0; i < copies.Count; i++)
+        {
+            if (!bombIndices.Contains(i))
+            {
+                copies[i].Disabled = true;
+            }
+        }
+    }
+
     private async void HandleExit()
     {
         await SceneManager.FadeAndExit(outerPanel);
@@ -374,7 +413,8 @@ public partial class Main : Control
                             RevealAllBombs(btn);
                         else
                             RevealCell(index);
-
+                        if (definition.GameStateProperty is not Definition.GameState.LOST)
+                            CheckWinCondition();
                         GD.PrintRich(
                             $"[color=#eb7821]LEFT CLICKED {btn.Disabled} Button Type {type} [/color]"
                         );
