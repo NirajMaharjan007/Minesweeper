@@ -11,9 +11,9 @@ Godot C# Game
 - Game Engine
   - [Godot](https://godotengine.org/)
 - Developer
-  - ![GitHub](https://shields.io) [Niraj Maharjan](https://github.com/NirajMaharjan007/)
+  - [Niraj Maharjan](https://github.com/NirajMaharjan007/) ![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github)
     - Main Creator
-  - ![GitHub](https://shields.io) [Tom Pohorily A.K.A "valkyrienyanko"](https://github.com/valkyrienyanko)
+  - [Tom Pohorily A.K.A "valkyrienyanko" ](https://github.com/valkyrienyanko) ![GitHub](https://img.shields.io/badge/GitHub-181717?logo=github)
     - Contributor
 
 ## [Released at ITCH.io](https://nirajmaharjan007.itch.io/minesweeper)
