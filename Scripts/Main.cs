@@ -87,7 +87,7 @@ public partial class Main : Control
             .GetNode<HBoxContainer>("HBoxContainer")
             .GetNode<Button>("Exit");
 
-        exit.Pressed += async () => await SceneManager.FadeAndExit(outerPanel);
+        exit.Pressed += HandleExit;
 
         mainBox = container.GetNode<GridContainer>("MainBox");
         mainBox.Columns = Definition.GetCalculateColumn(definition.GridProperty);
@@ -298,6 +298,11 @@ public partial class Main : Control
         }
     }
 
+    private async void HandleExit()
+    {
+        await SceneManager.FadeAndExit(outerPanel);
+    }
+
     private async void HandleBack()
     {
         await SceneManager.LoadScene("res://Scenes/Option.tscn", "PanelContainer", outerPanel);
@@ -376,6 +381,24 @@ public partial class Main : Control
                     }
                 }
             };
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        try
+        {
+            back.Pressed -= HandleBack;
+            retry.Pressed -= HandleRetry;
+            exit.Pressed -= HandleExit;
+        }
+        catch (System.Exception e)
+        {
+            GD.PushWarning("Waring " + e.Message);
+        }
+        finally
+        {
+            QueueFree();
         }
     }
 }

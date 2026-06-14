@@ -84,6 +84,5 @@ public sealed class Definition
         set { _size = value; }
         get { return _size; }
     }
-
     public GameState GameStateProperty { set; get; }
 }
